@@ -1,0 +1,110 @@
+body {
+	background-color: #edf2ff;
+	min-width: 100vw;
+	min-height: 100vh;
+}
+
+button:focus {
+	outline: none;
+}
+
+h1 {
+	background-color: #427aff;
+	font-family: 'Open Sans', sans-serif;
+}
+
+canvas {
+	margin: auto;
+	border-radius: 3px;
+	border: 2px solid black;
+}
+
+
+#header {
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	font-size: 48px;
+}
+
+#gameContainer {
+	width: 800px;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: space-around;
+	background-color: #baceff;
+	border-radius: 3px;
+	border: 2px solid black;
+}
+
+
+#buttonContainer {
+	display: flex;
+	margin: auto;
+	align-content: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#buttonContainer > button {
+	/*text-align: center;*/
+	font-size: 18px;
+	font-family: 'Open Sans', sans-serif;
+	width:40px;
+	margin-left: 17px;
+	margin-right: 18px;
+	margin-bottom: 20px;
+	height:30px;
+	border-radius: 10px;
+	border: 2px solid black;
+	background-color: #427aff;
+}
+
+#status {
+	margin-top: 5px; 
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	border-radius: 2px;
+	border: 2px solid black;
+	background-color: #427aff;
+
+}
+
+#topStatus {
+	margin: 5px auto 5px 5px;
+	border-radius: 5px 5px 5px 0px;
+	padding: 5px 0px 5px 10px;
+}
+
+#bottomStatus {
+	margin: 5px 5px 5px auto;
+	border-radius: 0px 0px 5px 5px;
+	padding: 5px 10px 5px 0px;
+}
+
+#gameOver {
+	display: flex;
+	align-content: center;
+	justify-content: space-between;
+}
+
+#gameStatus {
+	margin: auto auto 20px 100px;
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+	border: 2px solid black;
+}
+
+#newGame {
+	margin: auto 100px 20px auto;
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+	border: 2px solid black;
+	background-color: #427aff;
+}
