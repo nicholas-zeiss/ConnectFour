@@ -32,7 +32,7 @@ class GameTree {
 	getComputerMove() {
 		//build up the game tree
 		this.genDecisionTree(this.root, 5, -Infinity, Infinity, true);		
-
+		console.log(this.root);
 		//now find and return the move with the highest score
 		let [max, column] = [-Infinity, 0];
 		this.root.children.forEach((node, i) => {

@@ -21,6 +21,18 @@ const Game = React.createClass({
 		};
 	},
 
+	componentDidMount() {
+		let listener = listen.bind(this);
+
+		window.addEventListener('keypress', listener);
+
+		function listen(event) {
+			if (!isNaN(+event.key) && 0 < +event.key && +event.key < 8) {
+				this.selectColumn(+event.key - 1);
+			}
+		}
+	},
+
 
 	selectColumn(col) {
 		if (this.state.status == 'in play' && this.state.board.isMoveLegal(col) && !this.state.lock) {

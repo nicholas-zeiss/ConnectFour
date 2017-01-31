@@ -42,9 +42,6 @@ class ConnectFour {
 
 
 	getStatus() {
-		if (Math.min(...this.board[0]) != 0) {
-			return "It's a tie";
-		}
 
 		for (let row = 0; row < this.rows; row++) {
 			for (let col = 0; col < this.columns; col++) {
@@ -56,6 +53,10 @@ class ConnectFour {
 			}
 		}
 
+		if (Math.min(...this.board[0]) != 0) {
+			return "It's a tie";
+		}
+		
 		return 'in play';
 	}
 
@@ -96,9 +97,9 @@ class ConnectFour {
 		for (let r = 0; r < this.rows; r++) {
 			for (let c =0; c < this.columns; c++) {
 				if (this.board[r][c] == 2) {
-					score += [0, 10, 100, 1000, 500000][this.getMaxStreak(r, c, 2)]
+					score += [0, 10, 100, 1000, Infinity][this.getMaxStreak(r, c, 2)]
 				} else if (this.board[r][c] == 1) {
-					score -= [0, 10, 100, 1000, 500000][this.getMaxStreak(r, c, 1)]
+					score -= [0, 10, 100, 1000, Infinity][this.getMaxStreak(r, c, 1)]
 				}
 			}	
 		}
