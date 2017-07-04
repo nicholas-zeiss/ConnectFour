@@ -1,3 +1,7 @@
+/**
+This stateless component holds various buttons used to manipulate the game of life through callbacks it receives in props
+**/
+
 import React from 'react';
 
 const LifeControl = (props) => {

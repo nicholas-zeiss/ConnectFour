@@ -15,8 +15,7 @@ class Life {
 	}
 
 	updateBoard() {
-		console.log('updating cells');
-		let oldBoard = this.board.map(row => row.slice());		//creates a shallow copy as to not fuck with react
+		let oldBoard = this.board.map(row => row.slice());		//creates a shallow copy as to maintain the original arrays
 
 		for (let r = 0; r < this.height; r++) {
 			for (let c = 0; c < this.width; c++) {
