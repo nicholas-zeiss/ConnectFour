@@ -49,7 +49,7 @@ class ConnectFour {
 		if (Math.min(...this.board[0]) != 0) {
 			this.status = "It's a tie";
 		}
-	}
+	}	
 
 	// player is either 1 or 2, human or computer respectively. Returns the length of the player's longest streak originating at this cell.
 	// Only call on a cell if its value is the same as the supplied player variable as it assumes the board at [row][col] is the same as player

@@ -4,6 +4,8 @@ The class representing the model for the connect four game. The board is a multi
 The algorithm responsible for the computer's play uses alpha-beta pruning to make decisions and is contained in the gameTree.js.
 **/
 
+import GameTree from './gameTree';
+
 class ConnectFour {
 	constructor() {
 		this.rows = 6;
@@ -22,7 +24,7 @@ class ConnectFour {
 	//or legal; if the column is full or the move is illegal it throws no errors and doesn't change the board
 	makeMove(col, player) {
 		for (let i = this.rows - 1; i >= 0; i--) {
-			if (this.board[i][col] === 0) {
+			if (this.board[i][col] == 0) {
 				this.board[i][col] = player;
 				break;
 			}
@@ -44,6 +46,22 @@ class ConnectFour {
 		this.turnCount--;
 	}
 
+	//to perform the computer's move we create an instance of GameTree using the current board, which uses a minimax w/ alpha beta pruning
+	//algorithm to find the computer's best move
+	makeComputerMove() {
+		this.makeMove(new GameTree(this).getComputerMove(), 2);
+	}
+
+
+	// whenever we make a move and will not reverse that move (ie it is a player's movement, or we make the move the computer ai chose for us)
+	// we must update the game's status (in play, someone won, or tie) using updateStatus(). However, when the computer ai traverses the game tree to determine
+	// the best move it often wants to check the status of the game (to see if the game has ended) without changing the game's status property as no move has yet been made.
+	// For this we use getStatus(), which returns the status of the board without updating this.status
+	// When we want to change the actual status we use updateStatus().
+	updateStatus() {
+		this.status = this.getStatus();
+	}
+
 	//see updateStatus()
 	getStatus() {
 		for (let row = 0; row < this.rows; row++) {
@@ -63,16 +81,6 @@ class ConnectFour {
 		return 'in play';
 	}
 
-	// whenever we make a move and will not reverse that move (ie it is a player's movement, or we make the move the computer ai chose for us)
-	// we must update the game's status (in play, someone won, or tie) using updateStatus(). However, when the computer ai traverses the game tree to determine
-	// the best move it often wants to check the status of the game (to see if the game has ended) without changing the game's status property as no move has yet been made.
-	// For this we use getStatus(), which returns the status of the game's board without changing the status of the game object.
-	// When we want to change the actual status we use updateStatus().
-	updateStatus() {
-		this.status = this.getStatus();
-	}
-
-
 	//this returns the longest open streak for the specified player (1 = human, 2 = computer) at the specified entry.
 	//the maximum length of the streak is 4, which indicates a win. If the streak value is 4 the open value is always true and the player supplied has won.
 	//whether a streak is open indicates whether it is blocked (false) or unblocked (true) by the boundaries of the game board or opposing chips.
@@ -83,17 +91,19 @@ class ConnectFour {
     for (let r = -1; r < 2; r++) {
     	for (let c = -1; c < 2; c++) {
     		if (r == 0 && c == 0) continue;				//skips the case where no direction is pursued
-  			let currStreak = 1;		
-    		let isOpen = true;
+  			
+  			let currStreak = 1, isOpen = true;		
+
     		for (let i = 1; i <= 3; i++) {
-    			if (this.board[row + r*i] && this.board[row + r*i][col + c*i] === player) {
+    			if (this.board[row + r*i] && this.board[row + r*i][col + c*i] == player) {
     				currStreak++;
-    			} else if (this.board[row + r*i] && this.board[row + r*i][col + c*i] !== 0) {
+    			} else if (this.board[row + r*i] && this.board[row + r*i][col + c*i] != 0) {
     				isOpen = false;
     				break;
     			}
-    			// streak = Math.max(streak, currStreak);
+
     		}
+
   			if (isOpen && currStreak > streak) {
   				[streak, open] = [currStreak, isOpen];
   			}

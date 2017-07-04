@@ -12,4 +12,4 @@ app.get('/', (req, res) => {
 
 const port = 5050;
 
-app.listen(port, () =>  console.log('Listening on port ', port));
+app.listen(port, () => console.log('Listening on port ', port));

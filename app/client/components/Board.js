@@ -34,24 +34,25 @@ const Board = React.createClass({
 		this.state.container.fillRect(0, 0, this.state.width, this.state.height);			//draw background
 
 
-		const deltax = Math.floor(this.state.width / (this.state.columns + 1));				//calculate step between possible chips and the chip radius
-		const deltay = Math.floor(this.state.height / (this.state.rows + 1));
-		const radius = 22;
+		const DELTA_X = Math.floor(this.state.width / (this.state.columns + 1));				//calculate step between possible chips and the chip radius
+		const DELTA_Y = Math.floor(this.state.height / (this.state.rows + 1));
+		const RADIUS = 22;
 
 		//draw each chip
 		for (let r = 0; r < this.state.rows; r++) {
 			for (let c = 0; c < this.state.columns; c++) {
-        this.state.container.fillStyle = 'black';			//draw outline
+        //draw outline
+        this.state.container.fillStyle = 'black';
         this.state.container.beginPath();
-        this.state.container.arc((c + 1) * deltax, (r + 1) * deltay, radius, 0 , 2 * Math.PI, false);
+        this.state.container.arc((c + 1) * DELTA_X, (r + 1) * DELTA_Y, RADIUS, 0 , 2 * Math.PI, false);
         this.state.container.fill();
         this.state.container.stroke();
         this.state.container.closePath();
 
-        //draw each chip
+        //draw chip
 			  this.state.container.fillStyle = ['#baceff', '#f9d000', 'red'][this.state.board[r][c]];		//choose color of each chip, if board is empty here transparent, 1 player, 2 computer			
         this.state.container.beginPath();
-        this.state.container.arc((c + 1) * deltax, (r + 1) * deltay, radius - 2, 0 , 2 * Math.PI, false);
+        this.state.container.arc((c + 1) * DELTA_X, (r + 1) * DELTA_Y, RADIUS - 2, 0 , 2 * Math.PI, false);
         this.state.container.fill();
         this.state.container.stroke();
         this.state.container.closePath();
