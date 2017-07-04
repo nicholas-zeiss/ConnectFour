@@ -13,16 +13,16 @@ class ConnectFour {
 		this.status = 'in play';
 	}
 
-	//returns a boolean representing if it is possible to make a movement in a specific colum
+	//returns a boolean representing if it is possible to make a movement in a specific, legal (ie 0 < column < 6) column
 	isMoveLegal(col) {
 		return this.board[0][col] == 0;
 	}
 
 	//drops the chip specified by the player integer (1 for player, 2 for computer) into the column specified. Does not check whether that column is already full
-	//or legal; it the column is full and the move is illegal it throws no errors but updates the game's board at a negative row index;
+	//or legal; if the column is full or the move is illegal it throws no errors and doesn't change the board
 	makeMove(col, player) {
 		for (let i = this.rows - 1; i >= 0; i--) {
-			if (this.board[i][col] == 0) {
+			if (this.board[i][col] === 0) {
 				this.board[i][col] = player;
 				break;
 			}
@@ -33,7 +33,7 @@ class ConnectFour {
 
 	//only used in building the minimax alpha beta tree for the computer's ai. When the game tree recurses on a move it makes that move, evaluates the
 	//minimax alpha beta pruning algorithm on that game state, and then immediately uses undoMove() so it can pass down a ConnectFour game
-	//to the next possible move that does not reflect the previous iterations movements
+	//to the next possible move that does not reflect the previous iteration's movements
 	undoMove(col) {
 		for (let row = 0; row < this.rows; row++) {
 			if (this.board[row][col] != 0) {
@@ -124,13 +124,13 @@ class ConnectFour {
 		return score;
 	}
 
-
+	//for debugging
 	print() {
 		this.board.forEach(row => console.log(row.join(' ')))
 		console.log(this.status, '\n\n')
 	}
 
-
+	//resets game state and statistics
 	clear() {
 		this.turnCount = 0;
 		this.status = 'in play';

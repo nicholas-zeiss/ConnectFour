@@ -4,10 +4,11 @@ It handles the logic of running the game based off of the user input and updates
 **/
 
 import Board from './Board';									//responsible for displaying the board to the user
-import GameTree from '../logic/gameTree';					//responsible for generating computer moves
 import ConnectFour from '../logic/connectFour';			//actual game model
 import GameControl from './GameControl';				
+import GameTree from '../logic/gameTree';					//responsible for generating computer moves
 import Input from './Input';							//handles user input
+import Life from './Life';
 import React from 'react';
 
 
@@ -28,7 +29,7 @@ const Game = React.createClass({
 		window.addEventListener('keypress', listener);
 
 		function listen(event) {
-			if (!isNaN(+event.key) && 0 < +event.key && +event.key < 8) {					//checks if keypress is a number between 1 and 7 inclusively
+			if (!isNaN(event.key) && 0 < +event.key && +event.key < 8) {					//checks if keypress is a number between 1 and 7 inclusively
 				let btn = document.getElementById('col-button--'+ event.key);
 				console.log(btn, event);
 				if (btn) {
@@ -108,6 +109,14 @@ const Game = React.createClass({
 			</div>
 		);
 	}
+
+	// render () {
+	// 	return (
+	// 		<div id='lifeContainer'>
+	// 			<Life/>
+	// 		</div>
+	// 	);
+	// }
 });
 
 export default Game;
