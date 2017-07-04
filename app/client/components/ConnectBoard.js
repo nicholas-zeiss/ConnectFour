@@ -4,7 +4,7 @@ This component renders the game board using a canvas element
 
 import React from 'react';
 
-const Board = React.createClass({
+const ConnectBoard = React.createClass({
 	getInitialState() {
 		return {
 			board : this.props.board,			//board to render
@@ -18,11 +18,13 @@ const Board = React.createClass({
 
 
 	componentDidMount() {
+		console.log('board mounted');
 		this.setState({container: document.getElementById('canvas').getContext('2d')}, this.drawCanvas);
 	},
 
 
 	componentDidUpdate() {
+		console.log('board updated');
 		this.drawCanvas();
 	},
 
@@ -66,4 +68,4 @@ const Board = React.createClass({
 	}
 })
 
-export default Board;
+export default ConnectBoard;

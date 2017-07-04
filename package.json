@@ -19,8 +19,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "start": "node app/server/server.js"
+    "start": "webpack && node app/server/server.js"
   },
   "author": "Nicholas Zeiss",
   "license": "ISC"

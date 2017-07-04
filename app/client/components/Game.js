@@ -3,11 +3,10 @@ This is the main page of the app. The Game component holds the instance of the C
 It handles the logic of running the game based off of the user input and updates the view as necessary.
 **/
 
-import Board from './Board';									//responsible for displaying the board to the user
+import ConnectBoard from './ConnectBoard';									//responsible for displaying the board to the user
 import ConnectFour from '../logic/connectFour';			//actual game model
 import GameControl from './GameControl';				
 import Input from './Input';							//handles user input
-import Life from './Life';
 import React from 'react';
 
 
@@ -100,7 +99,7 @@ const Game = React.createClass({
 					<h1 id='leftStatus'>Player: {this.state.score[0]} Computer: {this.state.score[1]}</h1>
 					<h1 id='rightStatus'>Turn count: {this.state.board.turnCount}</h1>
 				</div>
-				<Board board={this.state.board.board}/>
+				<ConnectBoard board={this.state.board.board}/>
 				<Input update={this.selectColumn}/>
 				<GameControl status={this.state.status} clearBoard={this.clearBoard}/>
 			</div>

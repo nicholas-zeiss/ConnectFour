@@ -1,0 +1,10 @@
+
+canvas {
+	border: 2px solid black;
+	margin: auto;
+}
+
+#view-controls-container {
+	display: flex;
+	flex-direction: column;
+}
