@@ -11,7 +11,7 @@ const Board = React.createClass({
 			columns: this.props.board[0].length,
 			rows: this.props.board.length,
 			container : null,					//upon initial render this will be updated to the canvas element's context
-			width: 600,					//TODO: make width and height variable on container's dimensions
+			width: 600,								//TODO: make width and height variable on container's dimensions
 			height: 430
 		}
 	},
@@ -52,7 +52,7 @@ const Board = React.createClass({
         //draw chip
 			  this.state.container.fillStyle = ['#baceff', '#f9d000', 'red'][this.state.board[r][c]];		//choose color of each chip, if board is empty here transparent, 1 player, 2 computer			
         this.state.container.beginPath();
-        this.state.container.arc((c + 1) * DELTA_X, (r + 1) * DELTA_Y, RADIUS - 2, 0 , 2 * Math.PI, false);
+        this.state.container.arc((c + 1) * DELTA_X, (r + 1) * DELTA_Y, RADIUS - 1, 0 , 2 * Math.PI, false);
         this.state.container.fill();
         this.state.container.stroke();
         this.state.container.closePath();

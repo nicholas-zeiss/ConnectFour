@@ -97,8 +97,8 @@ const Game = React.createClass({
 		return (
 			<div id='gameContainer'>
 				<div id ='status'>	
-					<h1 id='topStatus'>Player: {this.state.score[0]} Computer: {this.state.score[1]}</h1>
-					<h1 id='bottomStatus'>Turn count: {this.state.board.turnCount}</h1>
+					<h1 id='leftStatus'>Player: {this.state.score[0]} Computer: {this.state.score[1]}</h1>
+					<h1 id='rightStatus'>Turn count: {this.state.board.turnCount}</h1>
 				</div>
 				<Board board={this.state.board.board}/>
 				<Input update={this.selectColumn}/>

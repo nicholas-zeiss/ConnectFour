@@ -1,11 +1,8 @@
 body {
 	background-color: #edf2ff;
-	min-width: 100vw;
-	min-height: 100vh;
-}
-
-button:focus {
-	outline: none;
+	margin: 0px;
+	max-width: 100vw;
+	max-height: 100vh;
 }
 
 h1 {
@@ -13,67 +10,27 @@ h1 {
 	font-family: 'Open Sans', sans-serif;
 }
 
-canvas {
-	margin: auto;
-	border-radius: 3px;
-	border: 2px solid black;
-}
-
-
 #header {
+	background-color: #325bff;
+	font-family: 'Open Sans', sans-serif;
 	text-align: center;
-	padding-top: 15px;
 	padding-bottom: 10px;
+	margin: 5px;
 	font-size: 48px;
+	border-radius: 5px;
 }
 
 #gameContainer {
 	min-width: 650px;
-	/*min-height: 400px;*/
 	width: 60%;
-	/*height: 90%;*/
 	margin: auto;
 	display: flex;
 	flex-direction: column;
 	align-content: center;
 	justify-content: space-between;
 	background-color: #baceff;
-	border-radius: 3px;
-	border: 2px solid black;
-}
-
-
-#buttonContainer {
-	display: flex;
-	margin: auto;
-	align-content: center;
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
-
-#buttonContainer > button {
-	/*text-align: center;*/
-	font-size: 18px;
-	font-family: 'Open Sans', sans-serif;
-	width:40px;
-	margin-left: 17px;
-	margin-right: 18px;
-	margin-bottom: 10px;
-	height:30px;
-	border-radius: 10px;
-	border: 2px solid black;
-	background-color: #427aff;
-	box-shadow: 2px 2px black;
-}
-
-#buttonContainer > button:active {
-	background-color: '#0061ff';
-	transform: translateY(5px);
-}
-
-#buttonContainer > .active {
- 	background-color: '#0061ff';
-	transform: translateY(5px);
+	border-radius: 5px;
+	border: 1px solid black;
 }
 
 #status {
@@ -85,21 +42,55 @@ canvas {
 	flex-direction: row;
 	justify-content: space-between;
 	border-radius: 2px;
-	border: 2px solid black;
+	border: 1px solid black;
 	background-color: #427aff;
-
 }
 
-#topStatus {
+#leftStatus {
 	margin: 5px auto 5px 5px;
-	border-radius: 5px 5px 5px 0px;
 	padding: 5px 0px 5px 10px;
 }
 
-#bottomStatus {
+#rightStatus {
 	margin: 5px 5px 5px auto;
-	border-radius: 0px 0px 5px 5px;
 	padding: 5px 10px 5px 0px;
+}
+
+canvas {
+	margin: auto;
+	border-radius: 5px;
+	border: 2px solid black;
+}
+
+#buttonContainer {
+	display: flex;
+	margin: auto;
+	align-content: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#buttonContainer > button {
+	font-size: 18px;
+	font-family: 'Open Sans', sans-serif;
+	width:40px;
+	margin-left: 17px;
+	margin-right: 18px;
+	margin-bottom: 10px;
+	height:30px;
+	border-radius: 10px;
+	border: 2px solid black;
+	background-color: #427aff;
+	box-shadow: 2px 2px 5px black;
+}
+
+#buttonContainer > button:active, .active {
+ 	background: #0061ff;
+	transform: translate(4px, 4px);
+}
+
+#buttonContainer > button:focus {
+ 	outline: none;
 }
 
 #gameControl {
@@ -109,22 +100,27 @@ canvas {
 }
 
 #gameStatus {
-	margin: auto auto 10px 10px;
+	margin: -8px auto 10px 10px;
 	padding: 5px 10px 5px 10px;
 	border-radius: 2px;
-	border: 2px solid black;
+	border: 1px solid black;
+	box-shadow: 2px 2px 5px black;
 }
 
 #newGame {
 	font-size: 20px;
-	margin: auto 10px 10px auto;
+	margin: auto 15px 15px auto;
 	padding: 5px 10px 5px 10px;
 	border-radius: 5px;
-	border: 2px solid black;
+	border: 1px solid black;
 	background-color: #427aff;
-	box-shadow: 2px 2px black;
+	box-shadow: 2px 2px 5px black;
 }
 
 #newGame:active {
-	transform: translateY(5px);
+	transform: translate(4px, 4px);
+}
+
+#newGame:hover {
+	outline: none;
 }
