@@ -7,9 +7,8 @@ import React from 'react';
 const ConnectBoard = React.createClass({
 	getInitialState() {
 		return {
-			board : this.props.board,			//board to render
-			columns: this.props.board[0].length,
-			rows: this.props.board.length,
+			columns: 7,
+			rows: 6,
 			container : null,					//upon initial render this will be updated to the canvas element's context
 			width: 600,								//TODO: make width and height variable on container's dimensions
 			height: 430
@@ -18,13 +17,10 @@ const ConnectBoard = React.createClass({
 
 
 	componentDidMount() {
-		console.log('board mounted');
 		this.setState({container: document.getElementById('canvas').getContext('2d')}, this.drawCanvas);
 	},
 
-
 	componentDidUpdate() {
-		console.log('board updated');
 		this.drawCanvas();
 	},
 
@@ -52,7 +48,7 @@ const ConnectBoard = React.createClass({
         this.state.container.closePath();
 
         //draw chip
-			  this.state.container.fillStyle = ['#baceff', '#f9d000', 'red'][this.state.board[r][c]];		//choose color of each chip, if board is empty here transparent, 1 player, 2 computer			
+			  this.state.container.fillStyle = ['#baceff', '#f9d000', 'red'][this.props.board[r][c]];		//choose color of each chip, if board is empty here transparent, 1 player, 2 computer			
         this.state.container.beginPath();
         this.state.container.arc((c + 1) * DELTA_X, (r + 1) * DELTA_Y, RADIUS - 1, 0 , 2 * Math.PI, false);
         this.state.container.fill();

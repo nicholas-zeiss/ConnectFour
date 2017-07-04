@@ -1,10 +1,42 @@
-
-canvas {
-	border: 2px solid black;
-	margin: auto;
-}
-
 #view-controls-container {
 	display: flex;
 	flex-direction: column;
+}
+
+#life-canvas {
+	margin-top: 15px;
+}
+
+#controls-container {
+	margin: auto;
+	background-color: #baceff;
+	border: 1px solid black;
+	border-top-width: 0px;
+	border-radius: 0px 0px 8px 8px;
+	max-width: 500px;
+	min-height: 60px;
+	width: 50%;
+	display: flex;
+	align-items: center;
+}
+
+#controls-container > button {
+  font-size: 18px;
+	font-family: 'Open Sans', sans-serif;
+	padding: 5px 10px 5px 10px;
+	margin: auto;
+	height: 40px;
+	border-radius: 10px;
+	border: 2px solid black;
+	background-color: #427aff;
+	box-shadow: 2px 2px 5px black;
+}
+
+#controls-container > button:active {
+ 	background: #0061ff;
+	transform: translate(4px, 4px);
+}
+
+#controls-container > button:focus {
+ 	outline: none;
 }

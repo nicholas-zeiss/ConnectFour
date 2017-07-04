@@ -9,7 +9,7 @@ import React from 'react';
 
 const Choose = React.createClass({
 	getInitialState() {
-		return {choice:0};
+		return {choice:1};
 	},
 
 	chooseConnect() {
@@ -21,21 +21,18 @@ const Choose = React.createClass({
 	},
 
 	render() {
-		if (!this.state.choice) {
-			return (
-				<div>
+		return (
+			<div>
+				<div id='selector'>
 					<button type='button' onClick={this.chooseConnect}>Connect Four</button>
 					<button type='button' onClick={this.chooseLife}>Conway's Game of Life</button>
 				</div>
-			);
-		} else {
-			return (
 				<div>
-					<h1 id='header'>{this.state.status == 1 ? 'Connect Four' : 'Conway\'s Game of Life'}</h1>
-					{this.state.status == 1 ? <Game/> : <GameOfLife/>}
+					<h1 id='header'>{this.state.choice == 1 ? 'Connect Four' : 'Conway\'s Game of Life'}</h1>
+					{this.state.choice == 1 ? <Game/> : <GameOfLife/>}
 				</div>
-			);
-		}
+			</div>
+		);
 	}
 });
 

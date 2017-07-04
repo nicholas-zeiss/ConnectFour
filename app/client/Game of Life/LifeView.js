@@ -7,48 +7,43 @@ import React from 'react';
 const LifeView = React.createClass({
 	getInitialState() {
 		return {
-			cells: this.props.cells,
 			width: 30,
 			height: 30,
-			rows: this.props.cells.length,
-			columns: this.props.cells[0].length,
 			container: null
 		};
 	},
 
 	componentDidMount() {
-		this.setState({container: document.getElementById('canvas').getContext('2d')});
+		this.setState({container: document.getElementById('life-canvas').getContext('2d')});
 	},
 
 	componentDidUpdate() {
 		this.draw();
 	},
 
+	draw() {
+		let ctx = this.state.container;
+
+		ctx.fillStyle = '#3a3a3a';
+		ctx.fillRect(0, 0, this.state.width * this.props.cells[0].length, this.state.height * this.props.cells.length);			//set background color
+
+		for (let j = 0; j < this.props.cells.length; j++) {
+			for (let i = 0; i < this.props.cells[0].length; i++) {
+				ctx.fillStyle = this.props.cells[j][i] ? 'rgb(67,211,0)' : 'black';																			//green if alive, black if dead
+				ctx.fillRect(i * this.state.width + 1, j * this.state.height + 1, this.state.width - 2, this.state.height - 2);
+			}
+		}
+	},
+	
 	clickCell(e) {
 		this.props.toggleCell(Math.floor(e.nativeEvent.offsetY / this.state.height), 	//row and column respectively
 													Math.floor(e.nativeEvent.offsetX / this.state.width));
 	},
 
-	draw() {
-		let ctx = this.state.container;
-
-		ctx.clearRect(0, 0, this.state.width * this.state.columns, this.state.height * this.state.rows);			//clear board
-
-		for (let j = 0; j < this.state.rows; j++) {
-			for (let i = 0; i < this.state.columns; i++) {
-				ctx.fillStyle = 'black';
-				ctx.fillRect(i * this.state.width, j * this.state.height, this.state.width, this.state.height);
-
-				ctx.fillStyle = this.state.cells[j][i] ? 'red' : 'white';																													//red if alive, white if dead
-				ctx.fillRect(i * this.state.width + 1, j * this.state.height + 1, this.state.width - 2, this.state.height - 2);
-			}
-		}
-	},
-
 	render() {
 		return (
-			<canvas id='canvas' height={this.state.height * this.state.rows}
-			width={this.state.width * this.state.columns}
+			<canvas id='life-canvas' height={this.state.height * this.props.cells.length}
+			width={this.state.width * this.props.cells[0].length}
 			onClick={this.clickCell}></canvas>
 		);
 	}

@@ -10,9 +10,9 @@ import React from 'react';
 const GameOfLife = React.createClass({
 	getInitialState() {
 		return {
-			width : 20,
+			width : 40,
 			height : 20,
-			life : new Life(20,20),
+			life : new Life(40,20),
 			animating : false,
 			intervalID : null							//animation is done through use of a setInterval call, this stores the id of that call so we may clear it to stop animating
 		};
@@ -26,7 +26,7 @@ const GameOfLife = React.createClass({
     	let id = setInterval(() => {
     		this.state.life.updateBoard();
     		this.setState({});								//we must call setState everytime our instance of the game of life updates to force react to update
-    	}, 500);
+    	}, 150);
     	
     	this.setState({animating : true, intervalID : id});
     }
@@ -54,7 +54,7 @@ const GameOfLife = React.createClass({
 		return (
 			<div id='view-controls-container'>
 				<LifeView cells={this.state.life.board} toggleCell={this.toggleCell}/>
-				<LifeControl toggleAnimation={this.toggleAnimation} clear={this.clear}/>
+				<LifeControl toggleAnimation={this.toggleAnimation} clear={this.clear} animated={this.state.animating}/>
 			</div>
 		);	
 	}
