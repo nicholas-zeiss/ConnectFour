@@ -14,7 +14,8 @@ const GameOfLife = React.createClass({
 			height : 20,
 			life : new Life(40,20),
 			animating : false,
-			intervalID : null							//animation is done through use of a setInterval call, this stores the id of that call so we may clear it to stop animating
+			intervalID : null,							//animation is done through use of a setInterval call, this stores the id of that call so we may clear it to stop animating
+			renderGlow : false
 		};
 	},
 
@@ -32,11 +33,21 @@ const GameOfLife = React.createClass({
     }
 	},
 
-	//when one clicks on the canvas showing the cells, this is used as a callback to toggle that cell
-	toggleCell(r, c) {
+	//when one clicks (or drags) on the canvas showing the cells, this is used as a callback to toggle said cell(s)
+	toggleCells(set) {
 		if (!this.state.animating) {						//can't toggle while animation is in progress
-			this.state.life.flipCellState(r, c);
+			set.forEach(str => {
+				let [r, c] = str.split(':');
+				this.state.life.flipCellState(Number(r), Number(c))
+			});
+
 			this.setState({});										//force react to update
+		}
+	},
+
+	toggleGlow() {														//toggle light effects when rendering the board for performance reasons
+		if(!this.state.animating) {
+			this.setState({renderGlow : !this.state.renderGlow});
 		}
 	},
 
@@ -53,8 +64,8 @@ const GameOfLife = React.createClass({
 	render() {
 		return (
 			<div id='view-controls-container'>
-				<LifeView cells={this.state.life.board} toggleCell={this.toggleCell}/>
-				<LifeControl toggleAnimation={this.toggleAnimation} clear={this.clear} animated={this.state.animating}/>
+				<LifeView cells={this.state.life.board} toggleCells={this.toggleCells} animated={this.state.animating} glowing={this.state.renderGlow}/>
+				<LifeControl toggleAnimation={this.toggleAnimation} toggleGlow={this.toggleGlow} clear={this.clear} animated={this.state.animating} glowing={this.state.renderGlow}/>
 			</div>
 		);	
 	}
