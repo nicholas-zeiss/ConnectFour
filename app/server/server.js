@@ -10,6 +10,6 @@ app.get('/', (req, res) => {
 	res.render('index.html');
 });
 
-const port = 5050;
+const port = 6050;
 
-app.listen(port, () =>  console.log('Listening on port ', port));
+app.listen(port, () => console.log('Listening on port ', port));

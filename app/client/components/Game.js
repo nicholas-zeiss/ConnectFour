@@ -3,8 +3,7 @@ This is the main page of the app. The Game component holds the instance of the C
 It handles the logic of running the game based off of the user input and updates the view as necessary.
 **/
 
-import Board from './Board';									//responsible for displaying the board to the user
-import GameTree from '../logic/gameTree';					//responsible for generating computer moves
+import ConnectBoard from './ConnectBoard';									//responsible for displaying the board to the user
 import ConnectFour from '../logic/connectFour';			//actual game model
 import GameControl from './GameControl';				
 import Input from './Input';							//handles user input
@@ -28,13 +27,12 @@ const Game = React.createClass({
 		window.addEventListener('keypress', listener);
 
 		function listen(event) {
-			if (!isNaN(+event.key) && 0 < +event.key && +event.key < 8) {					//checks if keypress is a number between 1 and 7 inclusively
+			if (!isNaN(event.key) && 0 < +event.key && +event.key < 8) {					//checks if keypress is a number between 1 and 7 inclusively
 				let btn = document.getElementById('col-button--'+ event.key);
-				console.log(btn, event);
-				if (btn) {
-					btn.className = 'active';															//toggles button to begin animation
-					setTimeout(() => btn.className = 'inactive', 125);		//untoggles it to stop animation
-				}
+
+				btn.className = 'active';															//toggles button to begin animation
+				setTimeout(() => btn.className = 'inactive', 125);		//untoggles it to stop animation
+				
 				this.selectColumn(+event.key - 1);
 			}
 		}
@@ -42,7 +40,7 @@ const Game = React.createClass({
 
 	//handles user movements
 	selectColumn(col) {
-		if (this.state.status == 'in play' && this.state.board.isMoveLegal(col) && !this.state.lock) {  //checks if game is till in play and player movement is legal
+		if (this.state.status == 'in play' && !this.state.lock && this.state.board.isMoveLegal(col)) {  //checks if game is till in play and player movement is legal
 			//make the player's move
 			this.state.board.makeMove(col, 1);
 			this.state.board.updateStatus();
@@ -51,15 +49,14 @@ const Game = React.createClass({
 				//make the computer's move
 				
 				//first update the state and lock it so that the player's move renders
-				//lock it so that the player can't input a new piece until the computer moves
+				//land so that the player can't input a new piece until the computer moves
 			  this.updateState(true);		
 
 			  //after a short delay (for ux purposes) the alpha beta algorithm generates the computer's move and makes it	
 			  setTimeout(() => {
-			  	let tree = new GameTree(this.state.board);
-			  	this.state.board.makeMove(tree.getComputerMove(), 2);
+			  	this.state.board.makeComputerMove();
 			  	this.state.board.updateStatus();
-					this.updateState(false);
+			  	this.updateState(false);
 			  }, 500);
 			} else {							
 				//computer can't make a move so update the state and cause the board to rerender				
@@ -75,7 +72,7 @@ const Game = React.createClass({
 
 		if (state == 'You win!') {
 			score = [score[0] + 1, score[1]];
-		} else if (state == 'The computer wins') {
+		} else if (state == 'The computer wins!') {
 			score = [score[0], score[1] + 1];
 		}
 
@@ -99,10 +96,10 @@ const Game = React.createClass({
 		return (
 			<div id='gameContainer'>
 				<div id ='status'>	
-					<h1 id='topStatus'>Player: {this.state.score[0]} Computer: {this.state.score[1]}</h1>
-					<h1 id='bottomStatus'>Turn count: {this.state.board.turnCount}</h1>
+					<h1 id='leftStatus'>Player: {this.state.score[0]} Computer: {this.state.score[1]}</h1>
+					<h1 id='rightStatus'>Turn count: {this.state.board.turnCount}</h1>
 				</div>
-				<Board board={this.state.board.board}/>
+				<ConnectBoard board={this.state.board.board}/>
 				<Input update={this.selectColumn}/>
 				<GameControl status={this.state.status} clearBoard={this.clearBoard}/>
 			</div>

@@ -10,7 +10,7 @@ const Input = (props) => {
 		<div id = 'buttonContainer'>
 			{
 				new Array(7).fill(1).map((el, i) => {
-					return <button type='button' id={'col-button--'+(i + 1)} key={i} onClick={props.update.bind(null, i)}>{i + 1}</button>
+					return <button type='button' id={'col-button--' + (i + 1)} key={i} onClick={props.update.bind(null, i)}>{i + 1}</button>
 				})
 		  }
 		</div>

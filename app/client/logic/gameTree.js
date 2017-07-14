@@ -33,20 +33,19 @@ class GameTree {
 		this.root = new Node(null, game);		//root node of the game tree
 	}
 
-
 	getComputerMove() {
-		//build up the game tree w/ minimax and alpha beta pruningß
+		//build up the game tree w/ minimax and alpha beta pruning
 		this.genDecisionTree(this.root, 6, -Infinity, Infinity, true);		
 
 		//now find and return the move with the highest score
-		console.log('in game tree, assigning default col 0');
 		let [max, column] = [-Infinity, 0];
+		
 		this.root.children.forEach((node, i) => {
 			if (node.score > max) {
 				[max, column] = [node.score, node.column];
-				console.log('udating column to ', i);
 			}
 		});
+
 		return column;
 	}
 
@@ -68,15 +67,16 @@ class GameTree {
 						maxChild = Math.max(maxChild, this.genDecisionTree(child, depth - 1, alpha, beta, false));
 						this.game.undoMove(i);
 
-						alpha = Math.max(alpha, maxChild);						
+						alpha = Math.max(alpha, maxChild);
+
 						if (beta <= alpha) {
 							break;
 						}					
 					}
 				}
+
 				node.score = maxChild;
 				return maxChild;
-
 			} else {
 				//on a minimizing node
 				let minChild = Infinity;
