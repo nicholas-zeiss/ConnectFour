@@ -18,8 +18,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack && node app/server/server.js"
+    "lint": "eslint app/client/** app/server/**",
+    "prestart": "webpack",
+    "start": "node app/server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nicholas Zeiss",
   "license": "ISC"
