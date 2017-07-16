@@ -1,15 +1,15 @@
 /**
-This file holds the logic for the game solving algorithm that generates moves for the computer. An auxiliary class of Node helps build the game tree
-and is used by the actual GameTree class, which itself holds a ConnectFour game and generates moves. The algorithm used is minimax with alpha beta pruning to a depth
-of 6 moves.
+This file holds the logic for the game solving algorithm that generates moves for the computer. It takes an instance of ConnectFour and, using
+a min-max algorithm with alpha-beta pruning, returns the optimal move evaluated to a depth of 6 moves. An auxiliary class Node (a tree node 
+not the js Node harharhar) is used to build the tree used by each instance of GameTree, which itself holds a ConnectFour instance on which the tree is built.
 **/
 
 
 //basic Tree structure implementation
 class Node {
 	constructor(column, game) {
-		this.column = column; //keeps track of the column the previous move was played in
-		this.game = game; //keeps track of the ConnectFour game this node evaluates
+		this.column = column; 				//column the previous move was played in
+		this.game = game; 						//ConnectFour instance being evaluated
 		this.score = 0;
 		this.children = [];
 	}
@@ -19,25 +19,23 @@ class Node {
 	}
 
 	getScore() {
-		this.score = this.game.getScore();
-		return this.score;
+		return this.score = this.game.getScore();
 	}
 }
 
-//this class is built after every player move that does not end the game. It implements the Node class above for its tree.
-//It is supplied the current ConnectFour game, and then when getComputerMove() is called it builds a gameTree and finds
-//the optimal move for the computer using a minimax algorithm with alpha beta pruning.
+//An instance of this class is built after every player move that does not end the game. getComputerMove() is called 
+//on this instance to find the move the AI makes.
 class GameTree {
 	constructor(game) {
 		this.game = game;
-		this.root = new Node(null, game);		//root node of the game tree
+		this.root = new Node(null, game);
 	}
 
 	getComputerMove() {
 		//build up the game tree w/ minimax and alpha beta pruning
 		this.genDecisionTree(this.root, 6, -Infinity, Infinity, true);		
 
-		//now find and return the move with the highest score
+		//find and return the move with the highest score
 		let [max, column] = [-Infinity, 0];
 		
 		this.root.children.forEach((node, i) => {
@@ -51,11 +49,12 @@ class GameTree {
 
 	//uses minimax with alpha-beta pruning to generate a game tree with corresponding scores
 	genDecisionTree(node, depth, alpha, beta, playerIsComputer) {
-		if (depth == 0 || node.game.getStatus() != 'in play' || Math.min(...node.game.board[0]) != 0) {  //base case
+		if (depth == 0 || node.game.getStatus() != 'in play') {
 			return node.getScore();
-		} else {														//recursive case
+		
+		} else {
+			//on a maximizing node
 			if (playerIsComputer) {
-				//on a maximizing node
 				let maxChild = -Infinity;
 
 				for (let i = 0; i < 7; i++) {
@@ -75,10 +74,10 @@ class GameTree {
 					}
 				}
 
-				node.score = maxChild;
-				return maxChild;
+				return node.score = maxChild;
+
+			//on a minimizing node
 			} else {
-				//on a minimizing node
 				let minChild = Infinity;
 
 				for (let i = 0; i < 7; i++) {
@@ -98,8 +97,7 @@ class GameTree {
 					}
 				}
 
-				node.score = minChild;
-				return minChild;
+				return node.score = minChild;
 			}
 		}
 	}

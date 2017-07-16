@@ -1,6 +1,7 @@
 /**
-Displays the game status and let's the user start a new game
+Displays the game status and lets the user start a new game, child of Game
 **/ 
+
 import React from 'react';
 
 const GameControl = (props) => {

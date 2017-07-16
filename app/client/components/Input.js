@@ -1,6 +1,6 @@
 /**
-Responsible for handling user input to the game. It is passed down a method of the parent Game component which
-allows it to update the game from there
+Responsible for handling user input for selecting a move through buttons; the event listener for the corresponding
+keypresses are instantiated in Game.
 **/
 
 import React from 'react';

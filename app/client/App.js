@@ -1,5 +1,5 @@
 /** 
-initializes the react app and renders it to the DOM
+Initializes the react app and renders it to the DOM
 **/
 
 import Game from './components/Game';
