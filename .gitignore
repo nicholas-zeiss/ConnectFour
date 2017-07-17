@@ -8,6 +8,8 @@ node_modules/*
 
 app/dist/*
 
-app/server/db/*
+app/server/db/data/*
+
+app/server/db/migrations
 
 app/server/migrations/*
