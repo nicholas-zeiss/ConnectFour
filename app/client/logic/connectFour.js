@@ -34,9 +34,7 @@ class ConnectFour {
 	}
 
 
-	//Only used in by gameTree. To test the value of a specific move the AI will make the move with makeMove 
-	//which alters the actual game board. When gameTree is done evaluating that move and subsequent moves
-	//it restores the game board using this method.
+	//Only used in gameTree, lets the AI make and unmake moves for testing. 
 	undoMove(col) {
 		for (let row = 0; row < this.rows; row++) {
 			if (this.board[row][col] != 0) {
@@ -47,29 +45,27 @@ class ConnectFour {
 		this.turnCount--;
 	}
 
-	//To find the AI's move we create an instance of GameTree using the current board and call on it to return its move.
 	makeComputerMove() {
-		this.makeMove(new GameTree(this).getComputerMove(), 2);
+		let col = new GameTree(this).getComputerMove();
+		this.makeMove(col, 2);
+		return col;
 	}
 
 
 	//When a permanent move is made (ie not a move made in gameTree by the AI) this function will call getStatus and update
 	//this instance's status.
-	updateStatus() {
-		this.status = this.getStatus();
+	updateStatus(col) {
+		this.status = this.getStatus(col);
 	}
 
-	//This method evaluates, but does not update, the state of the current game. It is used by updateStatus to update the state of the game
-	//when a permanent move has been made by the player or AI. However, the AI in gameTree needs to check the status of potentially 117,649 
-	//different game boards, and uses this method to do so without changing this instance of connectFour.
-	getStatus() {
+	//This method evaluates, but does not update, the state of the current game. The AI makes an unmakes many moves each time it chooses a move and uses this
+	//to avoid altering the status. col is the column the last chip was moved to, we only check that most recently added chip.
+	getStatus(col) {
 		for (let row = 0; row < this.rows; row++) {
-			for (let col = 0; col < this.columns; col++) {
-				if (this.board[row][col] == 1 && this.getMaxStreak(row, col, 1)[0] == 4) {
-					return 'You win!';
-				} else if (this.board[row][col] == 2 && this.getMaxStreak(row, col, 2)[0] == 4) {
-					return 'The computer wins!';
-				}
+			if (this.board[row][col] == 1 && this.getMaxStreak(row, col, 1)[0] == 4) {
+				return 'You win!';
+			} else if (this.board[row][col] == 2 && this.getMaxStreak(row, col, 2)[0] == 4) {
+				return 'The computer wins!';
 			}
 		}
 
@@ -80,61 +76,57 @@ class ConnectFour {
 		return 'in play';
 	}
 
-	//This returns the longest streak for the specified player (1 = human, 2 = AI) starting at the specified entry.
-	//Open (ie not blocked by opposing player) streaks of any length are returned over closed streaks. A streak of 4 is considered open.
-	//Returns [int streakLength, bool open, str streakStr] where streakStr is the row and colum of each chip joined by a space, eg '00 11 22'
-	getMaxStreak(row, col, player) {
-    let streakLength = 1, open = false, streakStr = '';
+	//This returns the longest streak for the specified player (1 = human, 2 = AI) starting at the specified entry as well as if the streak is open or closed.
+	//Open (ie not blocked by opposing player or board boundary) streaks of any length are returned over closed streaks. A streak of 4 is considered open.
+	//An optional callback chooseC can be supplied to alter what directions this method checks; this is used in getScore to avoid double counting streaks.
+	//Returns [int streakLength, bool open].
+	getMaxStreak(row, col, player, chooseC = () => -1) {
+    let streakLength = 1, open = false;
 
     for (let r = -1; r < 2; r++) {
-    	for (let c = -1; c < 2; c++) {
+    	for (let c = chooseC(r); c < 2; c++) {
     		if (r == 0 && c == 0) {
     			continue;
     		}
   			
-  			let currStreakLength = 1, currStreak = [], isOpen = true;
+  			let currStreakLength = 1, isOpen = true;
 
     		for (let i = 1; i <= 3; i++) {
     			if (this.board[row + r * i] && this.board[row + r * i][col + c * i] == player) {
     				currStreakLength++;
-    				currStreak.push(String(row + r * i) + String(col + c * i));
-    			
-    			} else if (this.board[row + r * i] && this.board[row + r * i][col + c * i] != 0) {
+
+    			} else if (!this.board[row + r * i] || (this.board[row + r * i] && this.board[row + r * i][col + c * i] !== 0)) {
     				isOpen = false;
-    				break;		
+    				break;
     			}
     		}
 
-  			if (isOpen && currStreakLength > streakLength) {
-  				[streakLength, open, streakStr] = [currStreakLength, isOpen, currStreak.join(' ')];
-  			}
+    		if (isOpen && currStreakLength > streakLength) {
+					[streakLength, open] = [currStreakLength, isOpen];
+				}
     	}
     }
 
-    return [streakLength, open, streakStr];
+    return [streakLength, open];
 	}
 
-
-	//calculates the score of the board for the AI's minimax alpha beta algorithm. Higher is
-	//better for the AI. We use the alreadyCounted set to avoid double counting streaks.
+	//Calculates the score of the board for the AI's minimax alpha beta algorithm. Higher is better for the AI.
+	//We supply a chooseC callback to getMaxStreack so that only streaks to the up and right, right, down and right, and down are checked.
+	//As we check every chip starting at the upper left this prevents counting some streaks redundantly.
 	getScore() {
-		let score = 0, alreadyCounted = new Set();
+		let score = 0;
 		
 		for (let r = 0; r < this.rows; r++) {
 			for (let c = 0; c < this.columns; c++) {
-				if (this.board[r][c] != 0 && !alreadyCounted.has(String(r) + String(c))) {
-					let streak;
-
+				if (this.board[r][c] != 0) {
 					if (this.board[r][c] == 2) {
-						streak = this.getMaxStreak(r, c, 2);
+						let streak = this.getMaxStreak(r, c, 2, (r) => r < 1 ? 1 : 0);
 						score += streak[1] ? [0, 10, 100, 1000, 500000][streak[0]] : 0;
 					
-					} else if (this.board[r][c] == 1) {
-						streak = this.getMaxStreak(r, c, 1);
+					} else {
+						let streak = this.getMaxStreak(r, c, 1, (r) => r < 1 ? 1 : 0);
 						score -= streak[1] ? [0, 10, 100, 1000, 500000][streak[0]] : 0;
 					}
-
-					streak[2].split(' ').forEach(rc => alreadyCounted.add(rc));
 				}
 			}	
 		}

@@ -49,7 +49,7 @@ class GameTree {
 
 	//uses minimax with alpha-beta pruning to generate a game tree with corresponding scores
 	genDecisionTree(node, depth, alpha, beta, playerIsComputer) {
-		if (depth == 0 || node.game.getStatus() != 'in play') {
+		if (depth == 0 || node.game.getStatus(node.column) != 'in play') {
 			return node.getScore();
 		
 		} else {

@@ -45,7 +45,7 @@ class Game extends React.Component {
 	selectColumn(col) {
 		if (this.state.status == 'in play' && !this.state.lock && this.state.board.isMoveLegal(col)) {
 			this.state.board.makeMove(col, 1);
-			this.state.board.updateStatus();
+			this.state.board.updateStatus(col);
 
 			//make the computer's move if user didn't just win/tie
 			if (this.state.board.status == 'in play') {			
@@ -54,8 +54,7 @@ class Game extends React.Component {
 
 			  //wait a short delay (for ux purposes) to make AI's move	
 			  setTimeout(() => {
-			  	this.state.board.makeComputerMove();
-			  	this.state.board.updateStatus();
+			  	this.state.board.updateStatus(this.state.board.makeComputerMove());
 			  	this.updateState(false);
 			  }, 500);
 			
