@@ -1,117 +1,180 @@
 body {
-	background-color: #edf2ff;
+	background-color: #ceddff;
 	margin: 0px;
 	max-width: 100vw;
 	max-height: 100vh;
-}
-
-h1 {
-	background-color: #427aff;
 	font-family: 'Open Sans', sans-serif;
 }
 
-
-#gameContainer {
-	min-width: 650px;
-	width: 60%;
-	margin: auto;
-	display: flex;
-	flex-direction: column;
-	align-content: center;
-	justify-content: space-between;
-	background-color: #baceff;
-	border-radius: 5px;
-	border: 1px solid black;
+#header {
+	background-color: #0061ff;
+	text-align: center;
+	font-size: 30px;
 }
 
-	#status {
-		margin-top: 5px; 
-		margin-bottom: 10px;
-		margin-left: 10px;
-		margin-right: 10px;
+#header > h1 {
+	padding-bottom: 10px;
+	margin: auto auto 20px auto;
+}
+
+#appContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+	#gameContainer {
+		min-width: 560px;
+		width: 50%;
+		margin-left: 30px;
+		/*margin: auto;*/
 		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		border-radius: 2px;
-		border: 1px solid black;
-		background-color: #427aff;
-	}
-
-		#leftStatus {
-			margin: 5px auto 5px 5px;
-			padding: 5px 0px 5px 10px;
-		}
-
-		#rightStatus {
-			margin: 5px 5px 5px auto;
-			padding: 5px 10px 5px 0px;
-		}
-
-	canvas {
-		margin: auto;
+		flex-direction: column;
+		align-content: center;
+		/*justify-content: space-between;*/
+		background-color: #a3bdff;
 		border-radius: 5px;
-		border: 2px solid black;
+		border: 1px solid rgba(0, 0, 0, .5);
 	}
 
-	#buttonContainer {
-		display: flex;
-		margin: auto;
-		align-content: center;
-		margin-top: 10px;
-		margin-bottom: 10px;
-	}
-
-		#buttonContainer > button {
-			font-size: 18px;
-			font-family: 'Open Sans', sans-serif;
-			width: 40px;
-			margin-left: 17px;
-			margin-right: 18px;
+		#status {
+			margin-top: 5px; 
 			margin-bottom: 10px;
-			height:30px;
-			border-radius: 10px;
-			border: 2px solid black;
-			background-color: #427aff;
-			box-shadow: 2px 2px 5px black;
-		}
-
-		#buttonContainer > button:active, .active {
-		 	background: #0061ff;
-			transform: translate(4px, 4px);
-		}
-
-		#buttonContainer > button:focus {
-		 	outline: none;
-		}
-
-	#gameControl {
-		display: flex;
-		align-content: center;
-		justify-content: space-between;
-	}
-
-		#gameStatus {
-			margin: -8px auto 10px 10px;
-			padding: 5px 10px 5px 10px;
+			margin-left: 10px;
+			margin-right: 10px;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
 			border-radius: 2px;
 			border: 1px solid black;
-			box-shadow: 2px 2px 5px black;
-		}
-
-		#newGame {
-			font-size: 20px;
-			margin: auto 15px 15px auto;
-			padding: 5px 10px 5px 10px;
-			border-radius: 5px;
-			border: 1px solid black;
 			background-color: #427aff;
-			box-shadow: 2px 2px 5px black;
+			font-size: 15px;
 		}
 
-			#newGame:active {
+			#leftStatus {
+				margin: 3px auto 5px 5px;
+				padding: 3px 0px 5px 10px;
+			}
+
+			#rightStatus {
+				margin: 3px 5px 5px auto;
+				padding: 3px 10px 5px 0px;
+			}
+
+		#canvasContainer {
+			margin: 0px 20px 0px 20px;
+		}
+
+			canvas {
+				border-radius: 5px;
+				border: 2px solid rgba(0, 0, 0, .9);
+			}
+
+		#buttonContainer {
+			display: flex;
+			margin: 20px 20px 10px 20px;
+			/*align-content: center;*/
+			justify-content: center;
+			/*margin-top: 10px;*/
+			/*margin-bottom: 10px;*/
+		}
+
+			#buttonContainer > button {
+				font-size: 18px;
+				/*font-family: 'Open Sans', sans-serif;*/
+				width: 6.5%;
+				margin-left: 3%;
+				margin-right: 3%;
+				margin-bottom: 10px;
+				height:30px;
+				border-radius: 10px;
+				border: 1px solid black;
+				background-color: #427aff;
+				box-shadow: 2px 2px 5px black;
+			}
+
+			#buttonContainer > button:active, .active {
+			 	background: #0061ff;
 				transform: translate(4px, 4px);
 			}
 
-			#newGame:hover, #newGame:focus {
-				outline: none;
+			#buttonContainer > button:focus {
+			 	outline: none;
 			}
+
+		#gameControl {
+			display: flex;
+			align-content: center;
+			justify-content: space-between;
+		}
+
+			#gameStatus {
+				font-size: 25px;
+				margin: auto auto 15px 15px;
+				padding: 5px 10px 5px 10px;
+				border-radius: 5px;
+				border: 1px solid black;
+				box-shadow: 2px 2px 5px black;
+				background-color: #427aff;
+			}
+
+			#newGame {
+				font-size: 25px;
+				margin: auto 15px 15px auto;
+				padding: 5px 10px 5px 10px;
+				border-radius: 5px;
+				border: 1px solid black;
+				background-color: #427aff;
+				box-shadow: 2px 2px 5px black;
+			}
+
+				#newGame:active {
+					transform: translate(4px, 4px);
+				}
+
+				#newGame:hover, #newGame:focus {
+					outline: none;
+				}
+
+	#scoresContainer {
+		display: flex;
+		flex-direction: column;
+		width: 30%;
+		min-width: 250px;
+		max-width: 350px;
+		max-height: 600px;
+		background-color: red;
+	}
+
+		#scoresContainer > h1 {
+			text-align: center;
+			margin-top: 10px;
+			margin-bottom: 0px;
+		}
+
+		#leaderboard {
+			width: 100%;
+			text-align: left;
+			font-size: 16px;
+			padding: 20px;
+			/*margin: auto;*/
+			/*margin-left: auto;*/
+		}
+
+			th {
+				padding-right: 20px;
+				padding-bottom: 20px;
+			}
+
+			#position {
+				padding-right: 35px;
+			}
+
+			#date {
+				padding-right: 40px;
+			}
+
+			td {
+				padding-bottom: 15px;
+			}
+

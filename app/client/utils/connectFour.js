@@ -60,17 +60,19 @@ class ConnectFour {
 
 	//This method evaluates, but does not update, the state of the current game. The AI makes an unmakes many moves each time it chooses a move and uses this
 	//to avoid altering the status. col is the column the last chip was moved to, we only check that most recently added chip.
-	getStatus(col) {
+	getStatus() {
 		for (let row = 0; row < this.rows; row++) {
-			if (this.board[row][col] == 1 && this.getMaxStreak(row, col, 1)[0] == 4) {
-				return 'You win!';
-			} else if (this.board[row][col] == 2 && this.getMaxStreak(row, col, 2)[0] == 4) {
-				return 'The computer wins!';
+			for (let col = 0; col < this.columns; col++) {
+				if (this.board[row][col] == 1 && this.getMaxStreak(row, col, 1)[0] == 4) {
+					return 'W';
+				} else if (this.board[row][col] == 2 && this.getMaxStreak(row, col, 2)[0] == 4) {
+					return 'L';
+				}
 			}
 		}
 
 		if (Math.min(...this.board[0]) != 0) {
-			return "It's a tie";
+			return 'T';
 		}
 		
 		return 'in play';
@@ -80,11 +82,11 @@ class ConnectFour {
 	//Open (ie not blocked by opposing player or board boundary) streaks of any length are returned over closed streaks. A streak of 4 is considered open.
 	//An optional callback chooseC can be supplied to alter what directions this method checks; this is used in getScore to avoid double counting streaks.
 	//Returns [int streakLength, bool open].
-	getMaxStreak(row, col, player, chooseC = () => -1) {
+	getMaxStreak(row, col, player) {
     let streakLength = 1, open = false;
 
     for (let r = -1; r < 2; r++) {
-    	for (let c = chooseC(r); c < 2; c++) {
+    	for (let c = -1; c < 2; c++) {
     		if (r == 0 && c == 0) {
     			continue;
     		}
@@ -95,7 +97,7 @@ class ConnectFour {
     			if (this.board[row + r * i] && this.board[row + r * i][col + c * i] == player) {
     				currStreakLength++;
 
-    			} else if (!this.board[row + r * i] || (this.board[row + r * i] && this.board[row + r * i][col + c * i] !== 0)) {
+    			} else if (this.board[row + r * i] && this.board[row + r * i][col + c * i] != 0) {
     				isOpen = false;
     				break;
     			}
@@ -120,11 +122,11 @@ class ConnectFour {
 			for (let c = 0; c < this.columns; c++) {
 				if (this.board[r][c] != 0) {
 					if (this.board[r][c] == 2) {
-						let streak = this.getMaxStreak(r, c, 2, (r) => r < 1 ? 1 : 0);
+						let streak = this.getMaxStreak(r, c, 2);
 						score += streak[1] ? [0, 10, 100, 1000, 500000][streak[0]] : 0;
 					
 					} else {
-						let streak = this.getMaxStreak(r, c, 1, (r) => r < 1 ? 1 : 0);
+						let streak = this.getMaxStreak(r, c, 1);
 						score -= streak[1] ? [0, 10, 100, 1000, 500000][streak[0]] : 0;
 					}
 				}

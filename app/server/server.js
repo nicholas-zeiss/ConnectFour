@@ -45,7 +45,7 @@ app.get('/delete/:id', (req, res) => {
 	.then(deleteCount => {
 		if (deleteCount) {
 			dbController.getScores()
-			.then(rows => res.status(201).json(rows));
+			.then(rows => res.status(200).json(rows));
 		} else {
 			res.sendStatus(400);	
 		}

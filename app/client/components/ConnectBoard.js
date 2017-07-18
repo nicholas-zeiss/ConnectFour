@@ -13,8 +13,6 @@ class ConnectBoard extends React.Component {
 			columns: 7,
 			rows: 6,
 			container : null,					//upon initial render this will be updated to the canvas element's context
-			width: 600,
-			height: 430
 		};
 	}
 
@@ -32,16 +30,16 @@ class ConnectBoard extends React.Component {
 
 
 	drawCanvas() {
-		this.state.container.clearRect(0, 0, this.state.width, this.state.height);
+		this.state.container.clearRect(0, 0, this.props.width, this.props.height);
 
 		//draw background
 		this.state.container.fillStyle = '#0061ff';
-		this.state.container.fillRect(0, 0, this.state.width, this.state.height);
+		this.state.container.fillRect(0, 0, this.props.width, this.props.height);
 
 
-		const DELTA_X = Math.floor(this.state.width / (this.state.columns + 1));				//calculate step between chips
-		const DELTA_Y = Math.floor(this.state.height / (this.state.rows + 1));
-		const RADIUS = 22;
+		const DELTA_X = Math.floor(this.props.width / (this.state.columns + 1));				//calculate step between chips
+		const DELTA_Y = Math.floor(this.props.height / (this.state.rows + 1));
+		const RADIUS = DELTA_Y * .4;//25;
 
 		//draw each chip
 		for (let r = 0; r < this.state.rows; r++) {
@@ -67,7 +65,7 @@ class ConnectBoard extends React.Component {
 
 
 	render() {
-		return <canvas id='canvas' height={this.state.height} width={this.state.width}></canvas>
+		return <canvas id='canvas' height={this.props.height} width={this.props.width}></canvas>
 	}
 }
 

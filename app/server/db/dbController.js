@@ -18,6 +18,7 @@ exports.deleteScore = id => {
 
 exports.clearScores = () => {
 	return knex('scores').select().del();
+	// return knex('scores');
 }
 
 exports.validateScore = (score) => {
@@ -26,11 +27,11 @@ exports.validateScore = (score) => {
 	    return false;
 	  } else if (key == 'name' && (typeof score[key] != 'string' || score[key].length > 3)) {
 			return false;
-		} else if (key == 'outcome' && !['win','loss','tie'].includes(score[key])) {
+		} else if (key == 'outcome' && !['W','L','T'].includes(score[key])) {
 			return false;
 		} else if (key == 'turns' && typeof score[key] != 'number') {
 			return false;
-		} else if (key == 'date' && !/^\d{4}-\d{2}-\d{2}$/.test(score[key])) {
+		} else if (key == 'date' && !/^\d{2}-\d{2}-\d{2}$/.test(score[key])) {
 			return false;
 		}
 	}
