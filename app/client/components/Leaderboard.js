@@ -23,9 +23,9 @@ const Leaderboard = (props) => {
 			<thead>
 				<tr>
 					<th id='position'></th>
-					<th>Name</th>
-					<th>W/L/T</th>
-					<th>Turns</th>
+					<th id='name'>Name</th>
+					<th id='outcome'>W/L/T</th>
+					<th id='turnCount'>Turns</th>
 					<th id='date'>Date</th>
 				</tr>
 			</thead>

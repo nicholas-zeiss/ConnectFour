@@ -32,14 +32,22 @@ class Game extends React.Component {
 			
 			leaderboard: [],
 			eligible: false,
+			showModal: false,
 			
 			canvasDiv: null,
 			canvasWidth: 400,
 			canvasHeight: 300
 		};
 
+		//initialize async call to get leaderboard
+		getScores(scores => {
+			this.setState({
+				leaderboard: sortLeaderboard(scores)
+			});
+		});
+
 		//to size the canvas responsively we must track the div holding ConnectBoard, we do so by passing this as a ref to that div
-		this.updateCanvasDimensions = function(row) {					
+		this.updateCanvasDimensions = row => {					
 			if (row) {
 				this.setState({
 					canvasHeight: .65 * row.offsetWidth, 
@@ -47,14 +55,10 @@ class Game extends React.Component {
 					canvasDiv: row
 				});
 			}
-		}.bind(this);
-	}
+		}
 
-	//adds listeners to make moves for key presses from 1 - 7, toggles the button between active and inactive for css transition
-	//adds a listener for a window resize so the dimensions of the canvas will update
-	//calls the server for leaderboard information
-	componentDidMount() {
-		window.addEventListener('keypress', (e) => {
+		//this is the event listener we use to handle the keyboard being used to make a move
+		this.columnKeyListener = e => {
 			if (!isNaN(e.key) && 0 < Number(e.key) && Number(e.key) < 8) {
 				let btn = document.getElementById('col-button--'+ e.key);
 
@@ -64,21 +68,31 @@ class Game extends React.Component {
 				
 				this.selectColumn(Number(e.key) - 1);
 			}
-		});
+		}
 
+		if (!this.state.lock) {
+			window.addEventListener('keypress', this.columnKeyListener);
+		}
+	}
+
+	//adds a listener for a window resize so the dimensions of the canvas will update
+	componentDidMount() {
 		window.onresize = () => { 
 			this.setState({
 				canvasHeight: .65 * this.state.canvasDiv.offsetWidth,
 				canvasWidth: this.state.canvasDiv.offsetWidth
 			});
 		};
-
-		getScores(scores => this.setState({
-			leaderboard: sortLeaderboard(scores)
-		}));
 	}
 
-
+	componentDidUpdate() {
+		//if state is locked we aren't looking for keypresses and don't want the subsequent animation of the input buttons
+		if (this.state.lock) {
+			window.removeEventListener('keypress', this.columnKeyListener);
+		} else {
+			window.addEventListener('keypress', this.columnKeyListener);
+		}
+	}
 
 	//handles user movements
 	selectColumn(col) {
@@ -113,6 +127,8 @@ class Game extends React.Component {
 		let eligible = false;
 
 		if (status != 'in play') {
+			lock = true;
+
 			if (status == 'W') {
 				score[0]++;
 			
@@ -142,22 +158,43 @@ class Game extends React.Component {
 		this.setState({
 			status: this.state.board.status,
 			lock: false,
-			eligible: false
+			eligible: false,
+			showModal: false
 		});
 	}
 
-	//if player submitted score to leaderboard we must reload it and start a new game with clearBoard
-	updateLeaderboard() {
-		getScores(scores => this.setState({
-			eligible: false,
-			leaderboard: sortLeaderboard(scores)
-		}, this.clearBoard));
+	//if player submitted score to leaderboard we must reload the leaderboard and start a new game with clearBoard
+	//if no submission and reload is false, just clearBoard
+	updateLeaderboard(reload) {
+		if (reload) {
+			getScores(scores => this.setState({
+				leaderboard: sortLeaderboard(scores)
+			}, this.clearBoard));
+		} else {
+			this.clearBoard();
+		}
+	}
+
+	showModal() {
+		this.setState({
+			showModal: true
+		})
 	}
 
 
 	render() {
 		return (
 			<div>
+				
+				{this.state.showModal ? 
+					<SubmitScore 
+						outcome={this.state.status} 
+						turns={this.state.board.turnCount} 
+						deleteId={this.state.leaderboard.length ? this.state.leaderboard[this.state.leaderboard.length - 1].id : -1}
+						update={this.updateLeaderboard.bind(this)}/>
+					: null
+				}
+
 				<div id='header'>
 					<h1>Connect Four</h1>
 				</div>
@@ -175,25 +212,14 @@ class Game extends React.Component {
 							<ConnectBoard board={this.state.board.board} width={this.state.canvasWidth} height={this.state.canvasHeight}/>
 						</div>
 						
-						<Input update={this.selectColumn.bind(this)}/>
+						<Input update={this.selectColumn.bind(this)} lock={this.state.lock}/>
 						
-						<GameControl status={this.state.status} eligible={this.state.eligible} clearBoard={this.clearBoard.bind(this)}/>
-					
+						<GameControl status={this.state.status} eligible={this.state.eligible} clearBoard={this.clearBoard.bind(this)} showModal={this.showModal.bind(this)}/>
 					</div>
 					
 					<div id='scoresContainer'>
 						<h1>Top 10 Games</h1>
-						
 						<Leaderboard scores={this.state.leaderboard}/>
-						
-						{this.state.eligible  ? 
-							<SubmitScore 
-								outcome={this.state.status} 
-								turns={this.state.board.turnCount} 
-								leaderboard={this.state.leaderboard}
-								update={this.updateLeaderboard.bind(this)}/>
-							: null
-						}
 					</div>
 				</div>
 			</div>

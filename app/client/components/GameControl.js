@@ -13,7 +13,15 @@ const GameControl = (props) => {
 				props.status == 'W' ? 'You win!' :
 				props.status == 'L' ? 'The computer wins!' : 'It\'s a tie!'}
 			</h1>
-			<button id='newGame' onClick={props.clearBoard}>New Game?</button>
+			<div id='controlButtons'>
+				<button
+					type='button'
+					disabled={!props.eligible}
+					style={{visibility: props.eligible ? 'visible' : 'hidden'}}
+					onClick={props.showModal}>
+				Submit Score</button>
+				<button id='newGame' onClick={props.clearBoard}>Reset?</button>
+			</div>
 		</div>
 	);
 }
