@@ -1,6 +1,6 @@
 /**
 The class representing the model for the connect four game. The board is a 2d array where 0 denotes an open space,
-1 a player's chip, and 2 an AI's chip. The status describing the state of the game can be 'in play', 'You win!', 'The computer wins!', or "It's a tie".
+1 a player's chip, and 2 an AI's chip. The status describing the state of the game can be 'in play', 'W', 'L', or 'T' (win for player/loss/tie).
 The algorithm responsible for the computer's play uses a min-max algorithm with alpha-beta pruning and is contained in the gameTree.js.
 **/
 
@@ -47,19 +47,28 @@ class ConnectFour {
 
 	makeComputerMove() {
 		let col = new GameTree(this).getComputerMove();
+		
+		// to test what happens if the player wins or ties we need to overwrite the AI as I have never beaten it
+		// let col;
+		// for (let c = 0; c < this.columns; c++) {
+		// 	if (this.isMoveLegal(c)) {
+		// 		col = c;
+		// 		break;
+		// 	}
+		// }
+
 		this.makeMove(col, 2);
 		return col;
 	}
 
 
-	//When a permanent move is made (ie not a move made in gameTree by the AI) this function will call getStatus and update
-	//this instance's status.
-	updateStatus(col) {
-		this.status = this.getStatus(col);
+	//When a permanent move is made (ie not a move made in gameTree by the AI) this function will call getStatus and update the status
+	updateStatus() {
+		this.status = this.getStatus();
 	}
 
 	//This method evaluates, but does not update, the state of the current game. The AI makes an unmakes many moves each time it chooses a move and uses this
-	//to avoid altering the status. col is the column the last chip was moved to, we only check that most recently added chip.
+	//to avoid altering the status.
 	getStatus() {
 		for (let row = 0; row < this.rows; row++) {
 			for (let col = 0; col < this.columns; col++) {
@@ -80,8 +89,6 @@ class ConnectFour {
 
 	//This returns the longest streak for the specified player (1 = human, 2 = AI) starting at the specified entry as well as if the streak is open or closed.
 	//Open (ie not blocked by opposing player or board boundary) streaks of any length are returned over closed streaks. A streak of 4 is considered open.
-	//An optional callback chooseC can be supplied to alter what directions this method checks; this is used in getScore to avoid double counting streaks.
-	//Returns [int streakLength, bool open].
 	getMaxStreak(row, col, player) {
     let streakLength = 1, open = false;
 
@@ -113,8 +120,6 @@ class ConnectFour {
 	}
 
 	//Calculates the score of the board for the AI's minimax alpha beta algorithm. Higher is better for the AI.
-	//We supply a chooseC callback to getMaxStreack so that only streaks to the up and right, right, down and right, and down are checked.
-	//As we check every chip starting at the upper left this prevents counting some streaks redundantly.
 	getScore() {
 		let score = 0;
 		

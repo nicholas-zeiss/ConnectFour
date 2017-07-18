@@ -1,9 +1,14 @@
+/**
+Renders the top 10 scores of all time, subcomponent of Game
+**/
+
 
 import React from 'react';
 
 const Leaderboard = (props) => {
 	let scores = props.scores.slice();
 
+	//if there are less than 10 scores we pad the list with empty scores so that we still list 1 through 10
 	for (let i = scores.length; i < 10; i++) {
 		scores[i] = {
 			name: '',
@@ -18,9 +23,9 @@ const Leaderboard = (props) => {
 			<thead>
 				<tr>
 					<th id='position'></th>
-					<th className='name'>Name</th>
-					<th className='outcome'>W/L/T</th>
-					<th className='turnCount'>Turns</th>
+					<th>Name</th>
+					<th>W/L/T</th>
+					<th>Turns</th>
 					<th id='date'>Date</th>
 				</tr>
 			</thead>
