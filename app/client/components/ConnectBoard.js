@@ -31,7 +31,7 @@ class ConnectBoard extends React.Component {
 
 	drawCanvas() {
 		//draw background
-		this.state.container.fillStyle = '#2b60ff';
+		this.state.container.fillStyle = '#2148bc';
 		this.state.container.fillRect(0, 0, this.props.width, this.props.height);
 
 		//calculate step between chips
@@ -45,12 +45,10 @@ class ConnectBoard extends React.Component {
 		//draw each chip
 		for (let r = 0; r < this.state.rows; r++) {
 			for (let c = 0; c < this.state.columns; c++) {
- 				
- 				//if no chip outline is same color as background, if chip slightly darker
-        this.state.container.strokeStyle = ['#a3bdff','#2148bc','#2148bc' ][this.props.board[r][c]];
-
-        //yellow for palyer, red for computer
-			  this.state.container.fillStyle = ['#a3bdff', '#f9d000', 'red'][this.props.board[r][c]];			
+        this.state.container.strokeStyle = 'black';
+        
+        //GameContainer background for empty, yellow for palyer, red for computer
+			  this.state.container.fillStyle = ['#d6e1ff', '#f9d000', 'red'][this.props.board[r][c]];			
         
         this.state.container.beginPath();
         this.state.container.arc((c + 1) * DELTA_X, (r + 1) * DELTA_Y, RADIUS - 1, 0 , 2 * Math.PI, false);

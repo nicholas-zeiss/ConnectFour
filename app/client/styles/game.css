@@ -1,0 +1,134 @@
+
+
+#gameContainer {
+	display: flex;
+	flex-direction: column;
+	min-width: 560px;
+	width: 70%;
+	margin: 0 10% 0 2%;
+	/*margin-right: 100px;*/
+	border: 1px solid rgba(0, 0, 0, .7);
+	border-radius: 5px;
+	box-shadow: 0 0 20px 0px black;
+	background-color: #d6e1ff;
+}
+
+
+	#gameContainer button {
+		text-shadow: 1px 1px 1px #3f3f3f;
+		color: #e2e0e0;
+		background-color: #1e9e53;
+	}
+
+
+	#gameContainer button:active, .active {
+		transform: translate(4px, 4px);
+		background-color: #106333 !important;
+	}
+
+
+	#status {
+		display: flex;
+		flex-direction: row;
+		padding: 1px;
+		/*margin: 7px 10px; */
+		margin: -1px -1px 10px -1px;
+		border: 1px solid rgba(0, 0, 0, .6);
+		border-radius: 3px 3px 0 0;
+		background-color: #3b62d6;
+	}
+
+
+		#status > h1 {
+			font-size: 35px;				
+		}
+
+
+		#leftStatus {
+			padding: 0 0 2px 10px;
+			margin: 0 auto 2px 5px;
+		}
+
+
+		#rightStatus {
+			padding: 0 10px 2px 0;
+			margin: 0 5px 2px auto;
+		}
+
+
+	#canvasContainer {
+		margin: 0px 20px;
+	}
+
+
+		canvas {
+			margin: 0 25px;
+			border: 1px solid rgba(0, 0, 0, .7);
+			border-radius: 3px;
+		}
+
+	
+	#buttonContainer {
+		display: flex;
+		justify-content: center;
+		margin: 0 20px;
+	}
+
+
+		#buttonContainer > button {
+			width: calc(calc(100% - 50px) / 16);
+			height: 30px;
+			margin: 4px calc(calc(100% - 50px) / 32) 0 calc(calc(100% - 50px) / 32);
+			border: 1px solid black;
+			border-radius: 10px;
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, .9);
+			outline: none;
+			font-size: 18px;
+			/*background-color: #2b60ff;*/
+		}
+
+
+	#gameControl {
+		/*display: flex;*/
+		/*flex-direction: row;*/
+		/*float: left;*/
+		margin: 10px 15px;
+		/*font-size: ;*/
+	}
+
+
+		/*#gameStatus {
+			margin: auto auto 0 0;
+			padding: 5px 10px;
+			border: 1px solid black;
+			border-radius: 3px;
+			font-size: 22px;
+			background-color: #3b62d6;
+		}
+*/
+			
+		/*#controlButtons {
+			display: flex;
+			flex-direction: row;
+		}	*/
+
+
+			#gameControl > button {
+				padding: 5px 10px;
+				border: 1px solid black;
+				border-radius: 5px;
+				box-shadow: 2px 2px 5px rgba(0, 0, 0, .9);
+				outline: none;
+				font-size: 22px;
+				/*background-color: #2b60ff;*/
+			}
+
+				#score{
+					float: left;
+					/*margin-right:auto;*/
+				}
+
+				#newGame {
+					float: right;
+					/*margin-left: auto;*/
+				}

@@ -128,11 +128,11 @@ class ConnectFour {
 				if (this.board[r][c] != 0) {
 					if (this.board[r][c] == 2) {
 						let streak = this.getMaxStreak(r, c, 2);
-						score += streak[1] ? [0, 10, 100, 100000, 5000000][streak[0]] : 0;
+						score += streak[1] ? [0, 10, 100, 1000, 1000000][streak[0]] : 0;
 					
 					} else {
 						let streak = this.getMaxStreak(r, c, 1);
-						score -= streak[1] ? [0, 10, 100, 100000, 5000000][streak[0]] : 0;
+						score -= streak[1] ? [0, 10, 100, 1000, 1000000][streak[0]] : 0;
 					}
 				}
 			}	

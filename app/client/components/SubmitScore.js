@@ -70,8 +70,9 @@ class SubmitScore extends React.Component {
 		return (
 			<div id='modal' onClick={this.clickedOutside.bind(this)}>
 				<div id='modalContent'>
+					<button type='button' id='closeModal' onClick={this.props.update.bind(null, false)}>&times;</button>
 					<div id='modalBody'>
-						<h1>Congratulations! You're eligible for a place on the leaderboard!</h1>
+						<h1>Congratulations! You've earned a place on the leaderboard!</h1>
 						<h2>Enter your initials</h2>
 						<div id='submitName'>
 							<div>
@@ -81,7 +82,6 @@ class SubmitScore extends React.Component {
 							<button type='button' onClick={this.submit.bind(this)}>Submit</button>
 						</div>
 					</div>
-					<button type='button' id='closeModal' onClick={this.props.update.bind(null, false)}>&times;</button>
 				</div>
 			</div>
 		)

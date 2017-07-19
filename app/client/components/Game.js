@@ -50,8 +50,8 @@ class Game extends React.Component {
 		this.updateCanvasDimensions = row => {					
 			if (row) {
 				this.setState({
-					canvasHeight: .65 * row.offsetWidth, 
-					canvasWidth: row.offsetWidth,
+					canvasHeight: .65 * (row.offsetWidth - 50), 
+					canvasWidth: row.offsetWidth - 50,
 					canvasDiv: row
 				});
 			}
@@ -64,7 +64,7 @@ class Game extends React.Component {
 
 				btn.className = 'active';
 				
-				setTimeout(() => btn.className = 'inactive', 125);
+				setTimeout(() => btn.className = '', 125);
 				
 				this.selectColumn(Number(e.key) - 1);
 			}
@@ -79,8 +79,8 @@ class Game extends React.Component {
 	componentDidMount() {
 		window.onresize = () => { 
 			this.setState({
-				canvasHeight: .65 * this.state.canvasDiv.offsetWidth,
-				canvasWidth: this.state.canvasDiv.offsetWidth
+				canvasHeight: .65 * (this.state.canvasDiv.offsetWidth - 50),
+				canvasWidth: this.state.canvasDiv.offsetWidth - 50
 			});
 		};
 	}
@@ -183,8 +183,23 @@ class Game extends React.Component {
 
 
 	render() {
+		let rightStatus;
+
+		if (this.state.status == 'in play') {
+			rightStatus = `Turn count: ${this.state.board.turnCount}`;
+		
+		} else if (this.state.status == 'W') {
+			rightStatus = 'You win!'
+		
+		} else if (this.state.status == 'L') {
+			rightStatus = 'Computer wins!'
+		
+		} else {
+			rightStatus = 'Tie!'
+		}
+
 		return (
-			<div>
+			<div id='app'>
 				
 				{this.state.showModal ? 
 					<SubmitScore 
@@ -201,11 +216,16 @@ class Game extends React.Component {
 				
 				<div id='appContainer'>
 					
+					<div id='scoresContainer'>
+						<h1>Top 10 Games</h1>
+						<Leaderboard scores={this.state.leaderboard}/>
+					</div>
+
 					<div id='gameContainer'>
 						
 						<div id ='status'>	
 							<h1 id='leftStatus'>Player: {this.state.score[0]} Computer: {this.state.score[1]}</h1>
-							<h1 id='rightStatus'>Turn count: {this.state.board.turnCount}</h1>
+							<h1 id='rightStatus'>{rightStatus}</h1>
 						</div>
 						
 						<div id='canvasContainer' ref={this.updateCanvasDimensions}>
@@ -215,11 +235,6 @@ class Game extends React.Component {
 						<Input update={this.selectColumn.bind(this)} lock={this.state.lock}/>
 						
 						<GameControl status={this.state.status} eligible={this.state.eligible} clearBoard={this.clearBoard.bind(this)} showModal={this.showModal.bind(this)}/>
-					</div>
-					
-					<div id='scoresContainer'>
-						<h1>Top 10 Games</h1>
-						<Leaderboard scores={this.state.leaderboard}/>
 					</div>
 				</div>
 			</div>

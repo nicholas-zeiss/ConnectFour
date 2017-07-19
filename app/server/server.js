@@ -59,6 +59,15 @@ app.get('/delete/:id', (req, res) => {
 	});
 });
 
+app.post('/clear', (req, res) => {
+	if (req.body.key == 'I really want to clear the table') {
+		dbController.clearScores(req.body.key)
+		res.sendStatus(204);
+	} else {
+		res.sendStatus(403);
+	}
+})
+
 
 const port = process.env.PORT || 6050;
 

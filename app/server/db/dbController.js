@@ -24,13 +24,26 @@ exports.deleteScore = id => {
 	return knex('scores').where({id}).del();
 }
 
-//Clears table, use with caution. The callback is used to prevent any lazy accidental invocation.
-exports.clearScores = cb => {
-	if (cb() == 'Yes, clear the table') {
-		return knex('scores').select().del();
-	} else {
-		return null;
+//Clears table and pads with filler, use with caution. The key is used to prevent any lazy accidental invocation.
+exports.clearScores = key => {
+	if (key != 'I really want to clear the table') {
+		return;
 	}
+
+	knex('scores').select().del().then(delCount => {
+		knex('scores').insert([
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'},
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'},
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'},
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'},
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'},
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'},
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'},
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'},
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'},
+			{name: 'FOO', outcome: 'L', turns: 8, date: '01-01-70'}
+		]).then(a => console.log('cleared table'));
+	});
 }
 
 //Checks that the score object we receive in a POST is correctly formatted
