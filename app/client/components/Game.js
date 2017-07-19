@@ -54,13 +54,7 @@ class Game extends React.Component {
 		//this is the event listener we use to handle the keyboard being used to make a player move
 		this.columnKeyListener = e => {
 			if (!isNaN(e.key) && 0 < Number(e.key) && Number(e.key) < 8) {
-				let btn = document.getElementById('col-button--'+ e.key);
-
-				btn.className = 'active';
-				
-				setTimeout(() => btn.className = '', 125);
-				
-				this.selectColumn(Number(e.key) - 1);
+				document.getElementById('col-button--'+ e.key).click();
 			}
 		};
 
@@ -73,16 +67,16 @@ class Game extends React.Component {
 	componentDidMount() {
 		window.onresize = () => { 
 			this.setState({
-				canvasHeight: .65 * (this.state.canvasDiv.offsetWidth - 50),
-				canvasWidth: this.state.canvasDiv.offsetWidth - 50
+				canvasHeight: .6 * (this.state.canvasDiv.offsetWidth - 60),
+				canvasWidth: this.state.canvasDiv.offsetWidth - 60
 			});
 		};
 
 		let canvasDiv = document.getElementById('canvasContainer')
 
 		this.setState({
-			canvasHeight: .65 * (canvasDiv.offsetWidth - 50), 
-			canvasWidth: canvasDiv.offsetWidth - 50,
+			canvasHeight: .6 * (canvasDiv.offsetWidth - 60), 
+			canvasWidth: canvasDiv.offsetWidth - 60,
 			canvasDiv: canvasDiv
 		});
 	}
@@ -224,13 +218,17 @@ class Game extends React.Component {
 					: null
 				}
 
+				
 				<div id='header'>
 					<h1>Connect Four</h1>
 				</div>
 				
 				<div id='appContainer'>
-					<ScoreBoard scores={this.state.leaderboard}/>
+					<div id='empty'>
+						<ScoreBoard scores={this.state.leaderboard}/>
+					</div>
 
+				
 					<div id='gameContainer'>
 						
 						<div id ='status'>	
@@ -242,8 +240,7 @@ class Game extends React.Component {
 							<ConnectBoard
 								board={this.state.board.board}
 								width={this.state.canvasWidth}
-								height={this.state.canvasHeight}
-							/>
+								height={this.state.canvasHeight}/>
 						</div>
 						
 						<Input makeMove={this.selectColumn.bind(this)} inputLock={this.state.inputLock}/>
@@ -252,14 +249,16 @@ class Game extends React.Component {
 							status={this.state.status} 
 							eligible={this.state.eligible} 
 							clearBoard={this.clearBoard.bind(this)} 
-							showModal={this.showModal.bind(this)}
-						/>
+							showModal={this.showModal.bind(this)}/>
 					</div>
+					
+					<div></div>
 				</div>
 			</div>
 		);
 	}
 }
+
 
 export default Game;
 

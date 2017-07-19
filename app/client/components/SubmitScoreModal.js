@@ -111,7 +111,7 @@ class SubmitScoreModal extends React.Component {
 						<h1>Congratulations! You've earned a place on the leaderboard!</h1>
 						<h2>Enter your initials</h2>
 						<div id='submitName'>
-							<div>
+							<div id='submitNameInput'>
 								<input 
 									type='text' 
 									size='4' 
@@ -121,7 +121,7 @@ class SubmitScoreModal extends React.Component {
 									id='nameInput'
 								/>
 								<span 
-									style={{visibility:this.state.showError ? 'visible' : 'hidden'}}>
+									style={{visibility: this.state.showError ? 'visible' : 'hidden'}}>
 									&nbsp;&nbsp;3 letters required
 								</span>
 							</div>

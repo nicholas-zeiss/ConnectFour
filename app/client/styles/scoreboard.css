@@ -1,46 +1,64 @@
 
 
 #scoresContainer {
+	position: relative;
+	right: 295px;
 	display: flex;
-	flex-direction: column;
-	width: 300px;
-	min-width: 300px;
-	max-height: 600px;
-	margin-left: 0;
-	margin-right: 100px;
-	border: 1px solid rgba(0, 0, 0, .5);
-	border-left: none;
-	border-radius: 0 5px 5px 0;
-	box-shadow: 0 0 20px 1px black;
-	background-color: #d83422;
+	min-width: 340px;
+	flex-direction: row;
+	align-items: center;
+	margin-right: 0;
+	transition: right 750ms ease-out;
 }
 
 
-	#scoresContainer > h1 {
-		padding: 5px 0;
-		margin: -1px -1px 0 -1px;
-		border: 1px solid rgba(0, 0, 0, .4);
+	#leaderboard {
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		width: 300px;
+		height: 500px;
+		border: 1px solid rgba(0, 0, 0, .5);
 		border-left: none;
-		border-radius: 0 5px 0 0;
-		text-align: center;
-		background-color: #ad1a0a;
+		border-radius: 0 5px 5px 0;
+		box-shadow: 0 0 20px 1px black;
+		background-color: #d83422;
 	}
 
 
-	#highScores {
-		width: 100%;
-		padding: 20px 10px;
-		text-align: left;
-		font-size: 16px;
+		#leaderboard > h1 {
+			padding: 5px 0;
+			margin: -1px -1px 0 -1px;
+			border: 1px solid rgba(0, 0, 0, .4);
+			border-left: none;
+			border-radius: 0 5px 0 0;
+			font-size: 30px;
+			text-align: center;
+			background-color: #ad1a0a;
+		}
+
+
+		#scoreTable {
+			width: 100%;
+			padding: 20px 0 20px 30px;
+			text-align: left;
+			font-size: 16px;
+		}
+
+
+			#scoreTable td {
+				padding-bottom: 15px;
+			}
+
+
+	#expand {
+		z-index: 1;
+		padding: 0 5px 2px 5px;
+		border: 1px solid rgba(0, 0, 0, .5);
+		border-left: none;
+		border-radius: 0 5px 5px 0;
+		box-shadow: 0 0 20px 1px black;
+		font-size: 35px;
+		background-color: #d83422;
 	}
-
-
-		#highScores th {
-			padding-bottom: 20px;
-		}
-
-
-		#highScores td {
-			padding-bottom: 15px;
-		}
 

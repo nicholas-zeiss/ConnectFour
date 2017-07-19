@@ -7,6 +7,19 @@ import React from 'react';
 
 
 const Input = (props) => {
+	
+
+	const onClick = (i, e) => {
+		e.persist();
+		
+		props.makeMove.call(null, i);
+
+		e.target.style.transform = 'translate(2px, 2px)';
+		e.target.style.backgroundColor = '#106333';
+
+		setTimeout(() => e.target.style.transform = 'translate(0, 0)', 60);
+		setTimeout(() => e.target.style.backgroundColor = '#1e9e53', 100);
+	}
 
 	return (
 		<div id = 'inputContainer'>
@@ -16,7 +29,7 @@ const Input = (props) => {
 						type='button' 
 						id={'col-button--' + (i + 1)} 
 						key={i} 
-						onClick={props.makeMove.bind(null, i)} 
+						onClick={onClick.bind(null, i)} 
 						disabled={props.inputLock}>
 						{i + 1}
 					</button>

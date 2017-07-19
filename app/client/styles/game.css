@@ -1,11 +1,14 @@
 
 
 #gameContainer {
+	position: relative;
+	/*right: 100px;*/
 	display: flex;
 	flex-direction: column;
 	min-width: 560px;
-	width: 70%;
-	margin: 0 10% 0 2%;
+	max-width: 850px;
+	width: 80%;
+	margin: 0;
 	border: 1px solid rgba(0, 0, 0, .7);
 	border-radius: 5px;
 	box-shadow: 0 0 20px 0px black;
@@ -17,11 +20,12 @@
 		text-shadow: 1px 1px 1px #3f3f3f;
 		color: #e2e0e0;
 		background-color: #1e9e53;
+		transition: transform 60ms ease-out, background-color 20ms;
 	}
 
 
 	#gameContainer button:active, .active {
-		transform: translate(4px, 4px);
+		transform: translate(2px, 2px);
 		background-color: #106333 !important;
 	}
 
@@ -55,12 +59,12 @@
 
 
 	#canvasContainer {
-		margin: 0 20px;
+		/*margin: 0;*/
 	}
 
 
 		canvas {
-			margin: 0 25px;
+			margin: 0 30px;
 			border: 1px solid rgba(0, 0, 0, .7);
 			border-radius: 3px;
 		}
@@ -69,20 +73,14 @@
 	#inputContainer {
 		display: flex;
 		justify-content: center;
-		margin: 0 20px;
+		margin: 0;
 	}
 
-		/*
-		We want the input buttons to line up with the columns rendered in canvas.
-		The canvas has a width of 100% - 50px, and the distance between columns is 
-		an eighth of that, meaning each input button and its left/right margins should
-		also be an eigth of that. We make the button half of that distance and the margin
-		to either side a quarter of it.
-		*/
+
 		#inputContainer > button {
-			width: calc(calc(100% - 50px) / 16);
+			width: calc(calc(100% - 60px) / 16);
 			height: 30px;
-			margin: 4px calc(calc(100% - 50px) / 32) 0 calc(calc(100% - 50px) / 32);
+			margin: 4px calc(calc(100% - 60px) / 32) 0 calc(calc(100% - 60px) / 32);
 			border: 1px solid black;
 			border-radius: 10px;
 			box-shadow: 2px 2px 5px rgba(0, 0, 0, .9);
