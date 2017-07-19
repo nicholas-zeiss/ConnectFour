@@ -6,7 +6,6 @@
 	min-width: 560px;
 	width: 70%;
 	margin: 0 10% 0 2%;
-	/*margin-right: 100px;*/
 	border: 1px solid rgba(0, 0, 0, .7);
 	border-radius: 5px;
 	box-shadow: 0 0 20px 0px black;
@@ -31,7 +30,6 @@
 		display: flex;
 		flex-direction: row;
 		padding: 1px;
-		/*margin: 7px 10px; */
 		margin: -1px -1px 10px -1px;
 		border: 1px solid rgba(0, 0, 0, .6);
 		border-radius: 3px 3px 0 0;
@@ -57,7 +55,7 @@
 
 
 	#canvasContainer {
-		margin: 0px 20px;
+		margin: 0 20px;
 	}
 
 
@@ -68,14 +66,20 @@
 		}
 
 	
-	#buttonContainer {
+	#inputContainer {
 		display: flex;
 		justify-content: center;
 		margin: 0 20px;
 	}
 
-
-		#buttonContainer > button {
+		/*
+		We want the input buttons to line up with the columns rendered in canvas.
+		The canvas has a width of 100% - 50px, and the distance between columns is 
+		an eighth of that, meaning each input button and its left/right margins should
+		also be an eigth of that. We make the button half of that distance and the margin
+		to either side a quarter of it.
+		*/
+		#inputContainer > button {
 			width: calc(calc(100% - 50px) / 16);
 			height: 30px;
 			margin: 4px calc(calc(100% - 50px) / 32) 0 calc(calc(100% - 50px) / 32);
@@ -84,33 +88,12 @@
 			box-shadow: 2px 2px 5px rgba(0, 0, 0, .9);
 			outline: none;
 			font-size: 18px;
-			/*background-color: #2b60ff;*/
 		}
 
 
 	#gameControl {
-		/*display: flex;*/
-		/*flex-direction: row;*/
-		/*float: left;*/
 		margin: 10px 15px;
-		/*font-size: ;*/
 	}
-
-
-		/*#gameStatus {
-			margin: auto auto 0 0;
-			padding: 5px 10px;
-			border: 1px solid black;
-			border-radius: 3px;
-			font-size: 22px;
-			background-color: #3b62d6;
-		}
-*/
-			
-		/*#controlButtons {
-			display: flex;
-			flex-direction: row;
-		}	*/
 
 
 			#gameControl > button {
@@ -120,15 +103,15 @@
 				box-shadow: 2px 2px 5px rgba(0, 0, 0, .9);
 				outline: none;
 				font-size: 22px;
-				/*background-color: #2b60ff;*/
 			}
 
-				#score{
+
+				#submitScore{
 					float: left;
-					/*margin-right:auto;*/
 				}
+
 
 				#newGame {
 					float: right;
-					/*margin-left: auto;*/
 				}
+

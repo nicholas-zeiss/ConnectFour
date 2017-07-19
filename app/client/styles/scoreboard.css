@@ -3,9 +3,8 @@
 #scoresContainer {
 	display: flex;
 	flex-direction: column;
-	width: 30%;
-	min-width: 300px;
 	width: 300px;
+	min-width: 300px;
 	max-height: 600px;
 	margin-left: 0;
 	margin-right: 100px;
@@ -28,30 +27,20 @@
 	}
 
 
-	#leaderboard {
+	#highScores {
 		width: 100%;
-		padding: 20px 10px 20px 10px;
+		padding: 20px 10px;
 		text-align: left;
 		font-size: 16px;
 	}
 
 
-		#leaderboard th {
+		#highScores th {
 			padding-bottom: 20px;
-			font-weight: bold;
 		}
 
 
-		#position {
-			padding-right: 25px;
-		}
-
-
-		#date {
-			padding-right: 3px;
-		}
-
-
-		#leaderboard td {
+		#highScores td {
 			padding-bottom: 15px;
 		}
+

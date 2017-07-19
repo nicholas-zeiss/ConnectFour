@@ -24,7 +24,8 @@ exports.deleteScore = id => {
 	return knex('scores').where({id}).del();
 }
 
-//Clears table and pads with filler, use with caution. The key is used to prevent any lazy accidental invocation.
+
+//Clears table and pads with filler data, use with caution. The key is used to prevent any lazy accidental invocation.
 exports.clearScores = key => {
 	if (key != 'I really want to clear the table') {
 		return;
@@ -45,6 +46,7 @@ exports.clearScores = key => {
 		]).then(a => console.log('cleared table'));
 	});
 }
+
 
 //Checks that the score object we receive in a POST is correctly formatted
 exports.validateScore = (score) => {
@@ -68,3 +70,4 @@ exports.validateScore = (score) => {
 
 	return true;
 }
+

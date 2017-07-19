@@ -1,8 +1,8 @@
 /**
-This is the parent component of the app. This component holds an instance of the ConnectFour class which is our model for the game and holds the leaderboard.
-Aside from a few pieces of information the actual user interface (ie our view) is handled by subcomponents. All logic for the user interacting with
-the ConnectFour instance is contained here and passed down as props to subcomponents where they are displayed in the user interface.
-This component handles the logic of running the game based off of the user input and updates the view as necessary.
+This is the root component of the app. This component holds an instance of the ConnectFour class which is our model for the game. It also holds the server
+controlled leaderboard. Aside from displaying the turn count and game status (in play, win loss, tie) the actual user interface is handled by subcomponents. 
+All logic for the user interacting with the ConnectFour instance is contained here and passed down as props to subcomponents. This component handles the
+running of the game based off of the user input and updates the view as necessary.
 **/
 
 import React from 'react';
@@ -15,8 +15,8 @@ import { deleteScore, getScores, sendScore } from '../utils/serverCalls';
 import ConnectBoard from './ConnectBoard';
 import GameControl from './GameControl';				
 import Input from './Input';						
-import Leaderboard from './Leaderboard';	
-import SubmitScore from './SubmitScore';
+import ScoreBoard from './ScoreBoard';	
+import SubmitScoreModal from './SubmitScoreModal';
 
 
 class Game extends React.Component {
@@ -26,18 +26,22 @@ class Game extends React.Component {
 		this.state = {
 			board: new ConnectFour(),
 			
+
 			status: 'in play',					//either 'in play', 'W', 'L', or "T"
 			score: [0, 0],							//player and computer respectively
-			lock: false,								//if true user cannot make a move, used to force player to wait for computer movement or start new game
+			inputLock: false,						//if true user cannot make a move, used to force player to wait for computer movement or start new game
 			
-			leaderboard: [],
-			eligible: false,
-			showModal: false,
+
+			leaderboard: [],						//holds the top 10 high scores of all time
+			eligible: false,						//true if game is over and player is eligible for the leaderboard		
+			showModal: false,						//if true the modal used to submit a high score is rendered
 			
-			canvasDiv: null,
+
+			canvasDiv: null,						//reference to the div containing the canvas element we use to render the game board, and its dimensions
 			canvasWidth: 400,
 			canvasHeight: 300
 		};
+
 
 		//initialize async call to get leaderboard
 		getScores(scores => {
@@ -46,18 +50,8 @@ class Game extends React.Component {
 			});
 		});
 
-		//to size the canvas responsively we must track the div holding ConnectBoard, we do so by passing this as a ref to that div
-		this.updateCanvasDimensions = row => {					
-			if (row) {
-				this.setState({
-					canvasHeight: .65 * (row.offsetWidth - 50), 
-					canvasWidth: row.offsetWidth - 50,
-					canvasDiv: row
-				});
-			}
-		}
 
-		//this is the event listener we use to handle the keyboard being used to make a move
+		//this is the event listener we use to handle the keyboard being used to make a player move
 		this.columnKeyListener = e => {
 			if (!isNaN(e.key) && 0 < Number(e.key) && Number(e.key) < 8) {
 				let btn = document.getElementById('col-button--'+ e.key);
@@ -68,14 +62,14 @@ class Game extends React.Component {
 				
 				this.selectColumn(Number(e.key) - 1);
 			}
-		}
+		};
 
-		if (!this.state.lock) {
-			window.addEventListener('keypress', this.columnKeyListener);
-		}
+		window.addEventListener('keypress', this.columnKeyListener);
 	}
 
-	//adds a listener for a window resize so the dimensions of the canvas will update
+
+	//Grab a reference to the div where canvas renders so we can size the canvas appropriately,
+	//also add a listener for a window resize to update those dimensions
 	componentDidMount() {
 		window.onresize = () => { 
 			this.setState({
@@ -83,51 +77,62 @@ class Game extends React.Component {
 				canvasWidth: this.state.canvasDiv.offsetWidth - 50
 			});
 		};
+
+		let canvasDiv = document.getElementById('canvasContainer')
+
+		this.setState({
+			canvasHeight: .65 * (canvasDiv.offsetWidth - 50), 
+			canvasWidth: canvasDiv.offsetWidth - 50,
+			canvasDiv: canvasDiv
+		});
 	}
 
+
+	//if input is locked we remove keypress listener, otherwise add it
 	componentDidUpdate() {
-		//if state is locked we aren't looking for keypresses and don't want the subsequent animation of the input buttons
-		if (this.state.lock) {
+		if (this.state.inputLock) {
 			window.removeEventListener('keypress', this.columnKeyListener);
 		} else {
 			window.addEventListener('keypress', this.columnKeyListener);
 		}
 	}
 
-	//handles user movements
+
+	//handles user moves
 	selectColumn(col) {
-		if (this.state.status == 'in play' && !this.state.lock && this.state.board.isMoveLegal(col)) {
-			this.state.board.makeMove(col, 1);
+		if (this.state.status == 'in play' && !this.state.inputLock && this.state.board.isMoveLegal(col)) {
+			this.state.board.makeMove(col, 1);				//1 is the player chip, computer uses 2
 			this.state.board.updateStatus();
 
 			//make the computer's move if user didn't just win/tie
 			if (this.state.board.status == 'in play') {			
 				
-			  this.updateState(true);		
+			  this.updateGame(true);		
 
 			  //wait a short delay (for ux purposes) to make AI's move	
 			  setTimeout(() => {
-			  	this.state.board.updateStatus(this.state.board.makeComputerMove());
-			  	this.updateState(false);
+			  	this.state.board.makeComputerMove();
+			  	this.state.board.updateStatus();
+			  	this.updateGame(false);
 			  }, 500);
-			
+				
+			//game just ended, update score				
 			} else {							
-				//game just ended, update score				
-			  this.updateState(true);
+			  this.updateGame(true);
 			}
 		}
 	}
 	
-	//updates game score, if game is in play or if not who win, locks/unlocks user input
-	updateState(lock) {
+
+	//updates game score, if game is in play or if not who won, locks/unlocks user input
+	updateGame(inputLock) {
 		let status = this.state.board.status;
 		let score = this.state.score;
-		
-		//determines is the player's game is good enough for the leaderboard, if so we give them to option to submit it
 		let eligible = false;
 
+
 		if (status != 'in play') {
-			lock = true;
+			inputLock = true;
 
 			if (status == 'W') {
 				score[0]++;
@@ -136,20 +141,39 @@ class Game extends React.Component {
 				score[1]++;
 			}
 
-			//either less than 10 scores total so any game is eligible, if not evaluate
-			eligible = this.state.leaderboard.length < 10 || isEligible({
+			let gameScore = {
 				outcome: status,
 				turns: this.state.board.turnCount
-			}, this.state.leaderboard);
+			}
+
+			//either less than 10 scores total so any game is eligible, if not compare this game to lowest score in leaderboard
+			eligible = this.state.leaderboard.length < 10 || isEligible(gameScore, this.state.leaderboard);
 		}
+
 
 		this.setState({
 			status,
 			score,
-			lock,
+			inputLock,
 			eligible
 		});
 	}
+
+
+	//Called when the modal used to submit scores is closed. Either a score was submitted and we must
+	//reload the scores, or if not we must reset the game.
+	updateLeaderboard(reload) {
+		if (reload) {
+			getScores(scores => {
+				this.setState({
+					leaderboard: sortLeaderboard(scores)
+				}, this.clearBoard);
+			});
+		} else {
+			this.clearBoard();
+		}
+	}
+
 
 	//reset game
 	clearBoard() {
@@ -157,56 +181,46 @@ class Game extends React.Component {
 		
 		this.setState({
 			status: this.state.board.status,
-			lock: false,
+			inputLock: false,
 			eligible: false,
 			showModal: false
 		});
 	}
 
-	//if player submitted score to leaderboard we must reload the leaderboard and start a new game with clearBoard
-	//if no submission and reload is false, just clearBoard
-	updateLeaderboard(reload) {
-		if (reload) {
-			getScores(scores => this.setState({
-				leaderboard: sortLeaderboard(scores)
-			}, this.clearBoard));
-		} else {
-			this.clearBoard();
-		}
-	}
 
 	showModal() {
 		this.setState({
 			showModal: true
-		})
+		});
 	}
 
 
 	render() {
-		let rightStatus;
 
-		if (this.state.status == 'in play') {
-			rightStatus = `Turn count: ${this.state.board.turnCount}`;
-		
-		} else if (this.state.status == 'W') {
-			rightStatus = 'You win!'
-		
-		} else if (this.state.status == 'L') {
-			rightStatus = 'Computer wins!'
-		
-		} else {
-			rightStatus = 'Tie!'
+		let rightStatus = {
+			'in play': `Turn count: ${this.state.board.turnCount}`,
+			W: 'You win!',
+			L: 'Computer wins!',
+			T: 'Tie!'
+		};
+
+		let deleteId = -1;
+
+		if (this.state.leaderboard.length == 10) {
+			deleteId = this.state.leaderboard[this.state.leaderboard.length - 1].id;
 		}
+
 
 		return (
 			<div id='app'>
 				
 				{this.state.showModal ? 
-					<SubmitScore 
+					<SubmitScoreModal 
 						outcome={this.state.status} 
 						turns={this.state.board.turnCount} 
-						deleteId={this.state.leaderboard.length ? this.state.leaderboard[this.state.leaderboard.length - 1].id : -1}
-						update={this.updateLeaderboard.bind(this)}/>
+						deleteId={deleteId}
+						close={this.updateLeaderboard.bind(this)}
+					/>
 					: null
 				}
 
@@ -215,26 +229,31 @@ class Game extends React.Component {
 				</div>
 				
 				<div id='appContainer'>
-					
-					<div id='scoresContainer'>
-						<h1>Top 10 Games</h1>
-						<Leaderboard scores={this.state.leaderboard}/>
-					</div>
+					<ScoreBoard scores={this.state.leaderboard}/>
 
 					<div id='gameContainer'>
 						
 						<div id ='status'>	
 							<h1 id='leftStatus'>Player: {this.state.score[0]} Computer: {this.state.score[1]}</h1>
-							<h1 id='rightStatus'>{rightStatus}</h1>
+							<h1 id='rightStatus'>{rightStatus[this.state.status]}</h1>
 						</div>
 						
-						<div id='canvasContainer' ref={this.updateCanvasDimensions}>
-							<ConnectBoard board={this.state.board.board} width={this.state.canvasWidth} height={this.state.canvasHeight}/>
+						<div id='canvasContainer'>
+							<ConnectBoard
+								board={this.state.board.board}
+								width={this.state.canvasWidth}
+								height={this.state.canvasHeight}
+							/>
 						</div>
 						
-						<Input update={this.selectColumn.bind(this)} lock={this.state.lock}/>
+						<Input makeMove={this.selectColumn.bind(this)} inputLock={this.state.inputLock}/>
 						
-						<GameControl status={this.state.status} eligible={this.state.eligible} clearBoard={this.clearBoard.bind(this)} showModal={this.showModal.bind(this)}/>
+						<GameControl 
+							status={this.state.status} 
+							eligible={this.state.eligible} 
+							clearBoard={this.clearBoard.bind(this)} 
+							showModal={this.showModal.bind(this)}
+						/>
 					</div>
 				</div>
 			</div>
@@ -243,3 +262,4 @@ class Game extends React.Component {
 }
 
 export default Game;
+

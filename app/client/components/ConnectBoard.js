@@ -1,5 +1,5 @@
 /**
-Render the game board using a canvas element, subcomponent of the Game component
+Render the game board using a canvas element, child of the Game component
 **/
 
 import React from 'react';
@@ -12,7 +12,7 @@ class ConnectBoard extends React.Component {
 		this.state = {
 			columns: 7,
 			rows: 6,
-			container : null,					//upon initial render this will be updated to the canvas element's context
+			container : null,					//will hold the canvas element's 2d rendering context
 		};
 	}
 
@@ -38,16 +38,16 @@ class ConnectBoard extends React.Component {
 		const DELTA_X = Math.floor(this.props.width / (this.state.columns + 1));
 		const DELTA_Y = Math.floor(this.props.height / (this.state.rows + 1));
 		
-		//as DELTA_Y < DELTa_X, the distance between the centers of each chip is DELTA_Y
+		//As DELTA_Y < DELTa_X, the distance between the centers of each chip is DELTA_Y.
+		//Our chip radius should be slightly smaller.
 		const RADIUS = DELTA_Y * .4; 														
 
-		
 		//draw each chip
 		for (let r = 0; r < this.state.rows; r++) {
 			for (let c = 0; c < this.state.columns; c++) {
         this.state.container.strokeStyle = 'black';
         
-        //GameContainer background for empty, yellow for palyer, red for computer
+        //background color for an empty chip, yellow for player, red for computer
 			  this.state.container.fillStyle = ['#d6e1ff', '#f9d000', 'red'][this.props.board[r][c]];			
         
         this.state.container.beginPath();
@@ -66,3 +66,4 @@ class ConnectBoard extends React.Component {
 }
 
 export default ConnectBoard;
+

@@ -1,8 +1,9 @@
 /**
-Displays the game status and lets the user start a new game, subcomponent of Game
+Lets the user start a new game or, if eligible, choose to submit their score by opening the modal. Child of the Game component.
 **/ 
 
 import React from 'react';
+
 
 const GameControl = (props) => {
 
@@ -10,7 +11,7 @@ const GameControl = (props) => {
 		<div id='gameControl'>
 			<button
 				type='button'
-				id='#score'
+				id='#submitScore'
 				disabled={!props.eligible}
 				style={{visibility: props.eligible ? 'visible' : 'hidden'}}
 				onClick={props.showModal}>
@@ -23,13 +24,3 @@ const GameControl = (props) => {
 
 export default GameControl;
 			
-			// <div id='controlButtons'>
-			// </div>
-
-
-
-			// <h1 id='gameStatus' style={{visibility:props.stat == 'in play' ? 'hidden' : 'visible'}}>
-			// 	{props.status == 'in play' ? 'Computer wins!' : 
-			// 	props.status == 'W' ? 'You win!' :
-			// 	props.status == 'L' ? 'Computer wins!' : 'Tie!'}
-			// </h1>
