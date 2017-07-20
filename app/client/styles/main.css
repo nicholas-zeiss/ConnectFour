@@ -37,6 +37,7 @@ body {
 	justify-content: space-between;
 	min-height: calc(100vh - 78px);
 }
+
 	/* used to force space-between in appContainer to center gameContainer */
 	#empty {
 		width: 0;

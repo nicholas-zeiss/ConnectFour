@@ -18,6 +18,7 @@
 
 	#gameContainer button {
 		text-shadow: 1px 1px 1px #3f3f3f;
+		cursor: pointer;
 		color: #e2e0e0;
 		background-color: #1e9e53;
 		transition: transform 60ms ease-out, background-color 20ms;

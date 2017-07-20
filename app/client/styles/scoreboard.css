@@ -2,18 +2,19 @@
 
 #scoresContainer {
 	position: relative;
-	right: 295px;
+	right: 298px;
 	display: flex;
 	min-width: 340px;
 	flex-direction: row;
 	align-items: center;
 	margin-right: 0;
+	text-shadow: none;
 	transition: right 750ms ease-out;
 }
 
 
 	#leaderboard {
-		z-index: 2;
+		z-index: 1;
 		display: flex;
 		flex-direction: column;
 		width: 300px;
@@ -22,6 +23,7 @@
 		border-left: none;
 		border-radius: 0 5px 5px 0;
 		box-shadow: 0 0 20px 1px black;
+
 		background-color: #d83422;
 	}
 
@@ -52,12 +54,12 @@
 
 
 	#expand {
-		z-index: 1;
+		z-index: 2;
 		padding: 0 5px 2px 5px;
 		border: 1px solid rgba(0, 0, 0, .5);
 		border-left: none;
 		border-radius: 0 5px 5px 0;
-		box-shadow: 0 0 20px 1px black;
+		cursor:pointer;
 		font-size: 35px;
 		background-color: #d83422;
 	}
