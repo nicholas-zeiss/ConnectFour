@@ -2,7 +2,7 @@
 
 #scoresContainer {
 	position: relative;
-	right: 298px;
+	right: 295px;
 	display: flex;
 	min-width: 340px;
 	flex-direction: row;
@@ -54,12 +54,12 @@
 
 
 	#expand {
-		z-index: 2;
+		z-index: 1;
 		padding: 0 5px 2px 5px;
 		border: 1px solid rgba(0, 0, 0, .5);
 		border-left: none;
 		border-radius: 0 5px 5px 0;
-		cursor:pointer;
+		cursor: pointer;
 		font-size: 35px;
 		background-color: #d83422;
 	}

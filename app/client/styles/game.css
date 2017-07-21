@@ -101,16 +101,19 @@
 				border-radius: 5px;
 				box-shadow: 2px 2px 5px rgba(0, 0, 0, .9);
 				outline: none;
-				font-size: 22px;
 			}
 
 
 				#submitScore{
 					float: left;
+					font-size: 35px;
+					background-color: #d83422 !important;
 				}
 
 
 				#newGame {
 					float: right;
+					margin-top: 15px;
+					font-size: 22px;
 				}
 

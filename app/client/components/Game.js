@@ -8,6 +8,7 @@ running of the game based off of the user input and updates the view as necessar
 import React from 'react';
 
 import ConnectFour from '../utils/connectFour';
+import GameTree from '../utils/gameTree';
 
 import { isEligible, sortLeaderboard } from '../utils/leaderboardUtils';
 import { deleteScore, getScores, sendScore } from '../utils/serverCalls';
@@ -57,7 +58,7 @@ class Game extends React.Component {
 				document.getElementById('col-button--'+ e.key).click();
 			}
 		};
-
+		
 		window.addEventListener('keypress', this.columnKeyListener);
 	}
 
@@ -232,7 +233,7 @@ class Game extends React.Component {
 					<div id='gameContainer'>
 						
 						<div id ='status'>	
-							<h1 id='leftStatus'>Player: {this.state.score[0]} Computer: {this.state.score[1]}</h1>
+							<h1 id='leftStatus'>Player: {this.state.score[0]}&nbsp;&nbsp;Computer: {this.state.score[1]}</h1>
 							<h1 id='rightStatus'>{rightStatus[this.state.status]}</h1>
 						</div>
 						

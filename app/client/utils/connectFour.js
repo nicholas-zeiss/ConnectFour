@@ -2,11 +2,6 @@
 The class representing the model for the connect four game. The board is a 2d array where 0 denotes an open space,
 1 a player's chip and 2 an AI's chip. The status describing the state of the game can be 'in play', 'W', 'L', or 'T' (win for player/loss/tie).
 The algorithm responsible for the AI's play uses a min-max algorithm with alpha-beta pruning and is contained in the gameTree.js.
-
-N.B.
-You may experience some seemingly illogical behavior from the AI where it may not immediately make a winning move when it has one. 
-This is explained in depth at the top of gameTree.js, but in short whenever it does so it is still guaranteed a win
-and is pursuing more potential winning streaks. In essence, it doesn't just want to beat you, it wants to beat you as much as possible.
 **/
 
 import GameTree from './gameTree';

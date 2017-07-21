@@ -23,17 +23,24 @@ class SubmitScoreModal extends React.Component {
 
 		this.keydownListener = e => {
 			if (e.key == 'Escape') {
-				this.props.close(false);
+				this.close(false);
 			} else if (e.key == 'Enter' && document.activeElement == this.state.inputElement) {
 				this.submit();
 			}
 		}
 	}
 
-
-	//grab a reference to the text input which is needed to submit the score by pressing enter when the text input has focus
+	//transition the modal content into the page
+	//grab a reference to the text input which is needed so that pressing enter only has an effect when it is in focus
 	//create a listener for the enter and escape keys
 	componentDidMount() {
+		//without the timeout the style will still change but no css transition occurs
+		setTimeout(() =>{
+			let modal = document.getElementById('modalContent')
+			console.log(modal.style.bottom);
+			modal.style.bottom = '0px';
+		}, 10);
+
 		let inputElement = document.getElementById('nameInput');
 		
 		window.addEventListener('keydown', this.keydownListener);
@@ -79,7 +86,7 @@ class SubmitScoreModal extends React.Component {
 				outcome: this.props.outcome,
 				turns: this.props.turns,
 				date: formatDate()
-			}, this.props.close.bind(null, true));
+			}, this.close.bind(this, true));
 
 		} else {
 			this.setState({
@@ -92,23 +99,32 @@ class SubmitScoreModal extends React.Component {
 	//if player clicks outside the modal, close it
 	clickedOutside(e) {
 		if (e.target == document.getElementById('modal')) {
-			this.props.close(false);
+			this.close(false);
 		}
+	}
+
+	//allows the css transition of the modal rising to the top of the page to occur before this component unmounts
+	close(reload) {
+		let modal = document.getElementById('modalContent')
+
+		modal.style.bottom = '1000px';
+
+		setTimeout(this.props.close.bind(null, reload), 700);
 	}
 
 
 	render() {
 		return (
 			<div id='modal' onClick={this.clickedOutside.bind(this)}>
-				<div id='modalContent'>
+				<div id='modalContent' style={{bottom:'500px'}}>
 					<button 
 						type='button' 
 						id='closeModal' 
-						onClick={this.props.close.bind(null, false)}>
+						onClick={this.close.bind(this, false)}>
 						&times;
 					</button>
 					<div id='modalBody'>
-						<h1>Congratulations! You've earned a place on the leaderboard!</h1>
+						<h1>Congratulations!<br/><br/>You've earned a place on the leaderboard!</h1>
 						<h2>Enter your initials</h2>
 						<div id='submitName'>
 							<div id='submitNameInput'>
