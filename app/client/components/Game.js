@@ -8,7 +8,6 @@ running of the game based off of the user input and updates the view as necessar
 import React from 'react';
 
 import ConnectFour from '../utils/connectFour';
-import GameTree from '../utils/gameTree';
 
 import { isEligible, sortLeaderboard } from '../utils/leaderboardUtils';
 import { deleteScore, getScores, sendScore } from '../utils/serverCalls';
@@ -96,7 +95,8 @@ class Game extends React.Component {
 	//handles user moves
 	selectColumn(col) {
 		if (this.state.status == 'in play' && !this.state.inputLock && this.state.board.isMoveLegal(col)) {
-			this.state.board.makeMove(col, 1);				//1 is the player chip, computer uses 2
+			//1 is the player chip, computer uses 2
+			this.state.board.makeMove(col, 1);
 			this.state.board.updateStatus();
 
 			//make the computer's move if user didn't just win/tie

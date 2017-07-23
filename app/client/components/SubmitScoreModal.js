@@ -123,36 +123,35 @@ class SubmitScoreModal extends React.Component {
 						onClick={this.close.bind(this, false)}>
 						&times;
 					</button>
-					<div id='modalBody'>
-						<h1>Congratulations!<br/><br/>You've earned a place on the leaderboard!</h1>
-						<h2>Enter your initials</h2>
-						<div id='submitName'>
-							<div id='submitNameInput'>
-								<input 
-									type='text' 
-									size='4' 
-									maxLength='3' 
-									onChange={this.changeName.bind(this)} 
-									value={this.state.name}
-									id='nameInput'
-								/>
-								<span 
-									style={{visibility: this.state.showError ? 'visible' : 'hidden'}}>
-									&nbsp;&nbsp;3 letters required
-								</span>
-							</div>
-							<button 
-								type='button' 
-								onClick={this.submit.bind(this)}>
-								Submit
-							</button>
+					<h1>Congratulations!<br/><small>You've earned a place on the leaderboard!</small></h1>
+					<div id='submitName'>
+						<div id='submitNameInput'>
+							<label>Initials:</label>
+							<input 
+								type='text' 
+								size='4' 
+								maxLength='3' 
+								onChange={this.changeName.bind(this)} 
+								value={this.state.name}
+								id='nameInput'/>
+							<span 
+								style={{visibility: this.state.showError ? 'visible' : 'hidden'}}>
+								&nbsp;&nbsp;3 letters required
+							</span>
 						</div>
+						<button 
+							type='button' 
+							onClick={this.submit.bind(this)}>
+							Submit
+						</button>
 					</div>
 				</div>
 			</div>
 		)
 	}
 }
+					// </div>
+					// <div id='modalBody'>
 
 export default SubmitScoreModal;
 

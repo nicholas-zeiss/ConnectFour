@@ -56,13 +56,13 @@ class GameTree {
 			return node.getScore();
 		
 		} else if (node.game.getStatus() == 'W') {						//avoid player wins at all cost
-			return node.score = -Infinity;
+			return node.score = Number.MIN_SAFE_INTEGER + (6 - depth) * 1000000000;
 		
 		} else if (node.game.getStatus() == 'L') {						//pursue player loss at all costs, but prefer to do it quickly
 			return node.score = Number.MAX_SAFE_INTEGER - (6 - depth) * 1000000000;
 		
 		} else if (node.game.getStatus() == 'T') {						//avoid ties at all cost, though prefer them to a player win
-			return node.score = Number.MIN_SAFE_INTEGER;				
+			return node.score = Number.MIN_SAFE_INTEGER + 7 * 1000000000;				
 		
 		} else if (playerIsComputer) {
 			let maxChild = -Infinity;
