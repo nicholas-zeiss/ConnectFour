@@ -4,7 +4,6 @@
  *
 **/
 
-// used in formatDate
 const months = {
 	Jan: '01',
 	Feb: '02',
@@ -44,8 +43,8 @@ function sortLeaderboard(board) {
 
 // When submitting a score to the leaderboard we expect a date string MM-DD-YY. This function takes the current date and formats it as such.
 function formatDate() {
-	let date = new Date().toDateString().slice(4);
-	return date.replace(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{2}) (\d{4})/, (str, m, d, y) => `${months[m]}-${d}-${y.slice(-2)}`);
+	const now = new Date();
+	return `${now.getMonth() + 1}-${now.getDate()}-${now.getFullYear() % 100}`;
 }
 
 
