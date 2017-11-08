@@ -14,6 +14,7 @@
     "ejs": "^2.5.5",
     "express": "^4.14.0",
     "knex": "^0.13.0",
+    "nodemon": "^1.12.1",
     "path": "^0.12.7",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -24,8 +25,8 @@
   "scripts": {
     "lint": "eslint app/client/** app/server/**",
     "manipulate": "node app/server/db/manipulate.js",
-    "prestart": "webpack",
-    "start": "node app/server/server.js",
+    "prestart": "webpack --optimize-minize --watch &",
+    "start": "nodemon app/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nicholas Zeiss",

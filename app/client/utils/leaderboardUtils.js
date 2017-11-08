@@ -1,9 +1,10 @@
 /**
-Here we have a few utilities for evaluating/manipulating the leaderboard
+ *
+ *	Here we have a few utilities for evaluating/manipulating the leaderboard
+ *
 **/
 
-
-//used in formatDate
+// used in formatDate
 const months = {
 	Jan: '01',
 	Feb: '02',
@@ -17,11 +18,11 @@ const months = {
 	Oct: '10',
 	Nov: '11',
 	Dec: '12'
-}
+};
 
 
-//Returns a number score for any finished game. Wins are always higher than ties which are always higher than losses. If outcome is the same
-//the one with the longer turn count is higher.
+// Returns a number score for any finished game. Wins are always higher than ties which are always higher than losses. If outcome is the same
+// the one with the longer turn count is higher.
 function evalScore(score) {
 	let modifier = ['L', 'T', 'W'].indexOf(score.outcome);
 
@@ -29,23 +30,21 @@ function evalScore(score) {
 }
 
 
-//Determines if a game is good enough for the leaderboard
+// Determines if a game is good enough for the leaderboard
 function isEligible(score, board) {
 	return evalScore(score) > evalScore(board[board.length - 1]);
 }
 
 
-//Sorts array of scores, descending
+// Sorts array of scores, descending
 function sortLeaderboard(board) {
 	return board.sort((a,b) => evalScore(b) - evalScore(a));
 }
 
 
-//When submitting a score to the leaderboard we expect a date string MM-DD-YY. This function takes the current date and formats it as such.
+// When submitting a score to the leaderboard we expect a date string MM-DD-YY. This function takes the current date and formats it as such.
 function formatDate() {
-	//gives us "Jul 18 2017" for example 
 	let date = new Date().toDateString().slice(4);
-
 	return date.replace(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{2}) (\d{4})/, (str, m, d, y) => `${months[m]}-${d}-${y.slice(-2)}`);
 }
 

@@ -72,7 +72,7 @@ class Game extends React.Component {
 			});
 		};
 
-		let canvasDiv = document.getElementById('canvasContainer')
+		let canvasDiv = document.getElementById('canvasContainer');
 
 		this.setState({
 			canvasHeight: .6 * (canvasDiv.offsetWidth - 60), 
