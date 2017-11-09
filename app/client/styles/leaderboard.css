@@ -1,6 +1,6 @@
 
 
-#scoresContainer {
+#leaderboard-container {
 	position: relative;
 	right: 295px;
 	display: flex;
@@ -40,7 +40,7 @@
 		}
 
 
-		#scoreTable {
+		#score-table {
 			width: 100%;
 			padding: 20px 0 20px 30px;
 			text-align: left;
@@ -48,7 +48,7 @@
 		}
 
 
-			#scoreTable td {
+			#score-table td {
 				padding-bottom: 15px;
 			}
 

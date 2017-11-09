@@ -11,7 +11,7 @@
 }
 
 
-	#modalContent {
+	#modal-content {
 		position: relative;
 		bottom: 1000px;
 		/*display: flex;*/
@@ -26,7 +26,7 @@
 	}
 
 
-		#closeModal {
+		#close-modal {
 			float: right;
 			margin: -17px 0 0 0;
 			padding: 0;
@@ -47,7 +47,7 @@
 		}*/
 
 
-			#modalContent > h1 {
+			#modal-content > h1 {
 				margin-top: 40px;
 				/*margin-bottom: 10px;*/
 				font-size: 35px;
@@ -55,7 +55,7 @@
 			}
 
 
-			#submitName {
+			#submit-name {
 				display: flex;
 				flex-direction: row;
 				align-items: center;
@@ -64,21 +64,21 @@
 			}
 
 
-				#submitNameInput {
+				#submit-name-input {
 					display: flex;
 					flex-direction: row;
 					align-items: center;
 					justify-content: flex-start;
 				}
 
-					#submitNameInput > label {
+					#submit-name-input > label {
 						padding-bottom: 5px;
 						margin-right: 10px;
 						font-size: 35px;
 					}
 
 
-					#submitNameInput > input {
+					#submit-name-input > input {
 						padding: 0 15px;
 						border-radius: 2px;
 						border: 1px solid #c42311;
@@ -92,12 +92,13 @@
 					}
 
 
-					#submitNameInput > span {
+					#submit-name-input > span {
+						margin-left: 10px;
 						font-size: 25px;
 					}			
 
 
-				#submitName > button {
+				#submit-name > button {
 					padding: 8px 10px;
 					border: 1px solid rgba(0, 0, 0, .5);
 					border-radius: 5px;

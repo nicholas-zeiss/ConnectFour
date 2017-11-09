@@ -8,7 +8,7 @@ import React from 'react';
 
 
 const toggle = () => {
-	let board = document.getElementById('scoresContainer');
+	const board = document.getElementById('leaderboard-container');
 
 	if (board.style.right == '0px') {
 		board.style.right = '295px';
@@ -19,11 +19,11 @@ const toggle = () => {
 
 
 const ScoreBoard = props => (
-	<div id='scoresContainer' onClick={ toggle }>
+	<div id='leaderboard-container' onClick={ toggle }>
 		<div id='leaderboard'>
 			<h1> Top 10 Games </h1>
 			
-			<table id='scoreTable'>
+			<table id='score-table'>
 				<tbody>
 					{
 						props.scores.map(score => (
