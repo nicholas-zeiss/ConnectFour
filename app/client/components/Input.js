@@ -8,13 +8,14 @@
 import React from 'react';
 
 
-const Input = (props) => {
+const Input = props => {
 	
 	const click = (i, e) => {
 		const target = e.target;
 
 		target.style.transform = 'translate(2px, 2px)';
 		target.style.backgroundColor = '#106333';
+		
 		setTimeout(() => target.style.transform = 'translate(0, 0)', 60);
 		setTimeout(() => target.style.backgroundColor = '#1e9e53', 100);
 		
