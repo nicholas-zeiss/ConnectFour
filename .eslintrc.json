@@ -5,6 +5,7 @@
 				"node": true
 		},
 		"extends": [ "eslint:recommended", "plugin:react/recommended" ],
+		"parser": "babel-eslint",
 		"parserOptions": {
 				"ecmaFeatures": {
 						"experimentalObjectRestSpread": true,
@@ -17,9 +18,13 @@
 				"react"
 		],
 		"rules": {
-				"class-property": [
+				"no-unused-vars": [
 					"error",
-					"always"
+					{ "argsIgnorePattern": "err" }
+				],
+				"class-property/class-property-semicolon": [
+					"error",
+					"never"
 				],
 				"indent": [
 						"error",

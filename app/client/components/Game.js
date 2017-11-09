@@ -150,7 +150,7 @@ class Game extends React.Component {
 
 	// Called when the modal used to submit scores is closed. Either a score was submitted and we must
 	// reload the scores, or if not we must reset the game.
-	updateLeaderboard(leaderboard) {
+	updateLeaderboard = leaderboard => {
 		if (leaderboard) {
 			this.setState({ leaderboard }, this.clearBoard);
 		} else {
@@ -202,9 +202,7 @@ class Game extends React.Component {
 				</div>
 				
 				<div id='app-container'>
-					<div id='empty'>
-						<Leaderboard scores={ this.state.leaderboard }/>
-					</div>
+					<Leaderboard scores={ this.state.leaderboard }/>
 				
 					<div id='game-container'>
 						<div id ='status'>	
@@ -229,8 +227,6 @@ class Game extends React.Component {
 							status={ this.state.status } 
 						/>
 					</div>
-					
-					<div></div>
 				</div>
 			</div>
 		);

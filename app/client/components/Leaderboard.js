@@ -10,10 +10,10 @@ import React from 'react';
 const toggle = () => {
 	const board = document.getElementById('leaderboard-container');
 
-	if (board.style.right == '0px') {
-		board.style.right = '295px';
+	if (board.style.left == '0px') {
+		board.style.left = '-295px';
 	} else {
-		board.style.right = '0px';
+		board.style.left = '0px';
 	}
 };
 

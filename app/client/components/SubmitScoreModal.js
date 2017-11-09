@@ -41,7 +41,7 @@ class SubmitScoreModal extends React.Component {
 		if (e.key == 'Escape') {
 			this.close.call(this, false);
 		}
-	};
+	}
 
 
 	// Validates input to initials form, updates state and error message as appropriate
@@ -58,7 +58,7 @@ class SubmitScoreModal extends React.Component {
 				showError: error
 			});
 		}
-	};
+	}
 
 
 	// If the submit button is clicked without a valid name we show the error message. If the name is valid
@@ -81,20 +81,20 @@ class SubmitScoreModal extends React.Component {
 		} else {
 			this.setState({ showError: true });
 		}
-	};
+	}
 
 
 	clickedOutside = e => {
 		if (e.target == this.modal) {
 			this.close(false);
 		}
-	};
+	}
 
 	// allows the css transition of the modal rising to the top of the page to occur before this component unmounts
 	close = leaderboard => {
 		this.modalContent.style.top = -this.modalContent.clientHeight + 'px';
-		setTimeout(this.props.close.bind(null, leaderboard), 500);
-	};
+		setTimeout(() => this.props.close(leaderboard), 500);
+	}
 
 
 	render() {

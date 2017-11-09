@@ -1,11 +1,10 @@
 
 
 #game-container {
-	position: relative;
 	min-width: 560px;
 	max-width: 850px;
 	width: 80%;
-	margin: 0;
+	margin: 0 auto;
 	
 	display: flex;
 	flex-direction: column;
