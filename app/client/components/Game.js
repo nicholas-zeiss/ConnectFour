@@ -52,7 +52,7 @@ class Game extends React.Component {
 
 		window.addEventListener('keypress', this.keypressMoveListener);
 
-		let canvasDiv = document.getElementById('canvasContainer');
+		const canvasDiv = document.getElementById('canvasContainer');
 
 		this.setState({
 			canvasHeight: .6 * (canvasDiv.offsetWidth - 60), 
@@ -110,7 +110,7 @@ class Game extends React.Component {
 
 	// updates game score, if game is in play or if not who won, locks/unlocks user input
 	updateGame(inputLock) {
-		let status = this.state.board.status;
+		const status = this.state.board.status;
 		let score = this.state.score;
 		let eligible = false;
 
@@ -170,7 +170,7 @@ class Game extends React.Component {
 
 
 	render() {
-		let rightStatus = {
+		const rightStatus = {
 			'in play': 'Turn count: ' + this.state.board.turnCount,
 			W: 'You win!',
 			L: 'Computer wins!',
