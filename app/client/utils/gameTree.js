@@ -74,7 +74,7 @@ class GameTree {
 			for (let i = 0; i < 7; i++) {
 				if (this.game.isMoveLegal(i)) {
 
-					let child = new Node(i, node.game);
+					const child = new Node(i, node.game);
 					node.addChild(child);		
 					
 					this.game.makeMove(i, 2);
@@ -97,7 +97,7 @@ class GameTree {
 			for (let i = 0; i < 7; i++) {
 				if (this.game.isMoveLegal(i)) {
 
-					let child = new Node(i, node.game);
+					const child = new Node(i, node.game);
 					node.addChild(child);						
 					
 					this.game.makeMove(i, 1);

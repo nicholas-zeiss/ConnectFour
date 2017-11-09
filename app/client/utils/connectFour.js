@@ -59,12 +59,6 @@ class ConnectFour {
 	}
 
 
-	// When a permanent move is made (ie not a move made in gameTree by the AI) this function will call getStatus and update the status.
-	updateStatus() {
-		this.status = this.getStatus();
-	}
-
-
 	// This method evaluates, but does not update, the status of the current game. The AI makes and unmakes many moves each time it
 	// chooses a move. It uses this to evaluate those moves without altering the status.
 	getStatus() {
@@ -87,6 +81,12 @@ class ConnectFour {
 	}
 
 
+	// When a permanent move is made (ie not a move made in gameTree by the AI) this function will call getStatus and update the status.
+	updateStatus() {
+		this.status = this.getStatus();
+	}
+
+
 	// This returns the longest open streak (up to and including 4) the specified player can make starting at [row][col] on
 	// their next turn. An open streak is defined as a streak that could potentially become a streak of 4, ie that potential 
 	// streak of 4 is not blocked by the edges of the board or an opposing chip. If the chip at [row][col] has no open
@@ -99,12 +99,11 @@ class ConnectFour {
 	// This is used by the AI to evaluate how favorable the board is.
 	getMaxStreak(row, col, player) {
 		let streakLength = 1;
-		let otherPlayer = player == 1 ? 2 : 1;
+		const otherPlayer = player == 1 ? 2 : 1;
 
 		// test all 8 possible directions
 		for (let r = -1; r < 2; r++) {
-			for (let c = -1; c < 2; c++) {
-				
+			for (let c = -1; c < 2; c++) {	
 				if (r == 0 && c == 0) {
 					continue;
 				}
@@ -114,7 +113,10 @@ class ConnectFour {
 				let hitZero = false;
 
 				for (let i = 1; i <= 3; i++) {
-					let chip = this.board[row + r * i] ? this.board[row + r * i][col + c * i] : null;
+					const currCol = col + c * i;
+					const currRow = row + r * i;
+
+					const chip = this.board[currRow] ? this.board[currRow][currCol] : null;
 
 					if (chip != null) {
 						if (chip == player) {
@@ -132,8 +134,7 @@ class ConnectFour {
 								currStreakLength++;
 							}
 							
-							hitZero = true;
-						
+							hitZero = true;			
 						}
 					} else {
 						isOpen = false;
@@ -157,7 +158,6 @@ class ConnectFour {
 		// test all 8 possible directions
 		for (let r = -1; r < 2; r++) {
 			for (let c = -1; c < 2; c++) {
-				
 				if (r == 0 && c == 0) {
 					continue;
 				}
@@ -186,9 +186,8 @@ class ConnectFour {
 		
 		for (let r = 0; r < this.rows; r++) {
 			for (let c = 0; c < this.columns; c++) {		
-				if (this.board[r][c] != 0) {
-					
-					let streak = this.getMaxStreak(r, c, this.board[r][c]);
+				if (this.board[r][c] != 0) {	
+					const streak = this.getMaxStreak(r, c, this.board[r][c]);
 					
 					if (this.board[r][c] == 2) {
 						score += [0, 10, 100, 1000, 1000000][streak];
@@ -222,6 +221,7 @@ class ConnectFour {
 		}
 	}
 }
+
 
 export default ConnectFour;
 
