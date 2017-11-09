@@ -5,32 +5,16 @@ Renders the top 10 scores of all time, child of the Game component.
 import React from 'react';
 
 
-const ScoreBoard = (props) => {
-	
-	//make shallow copy in case there are < 10 scores and we need to pad the array so we still list 1 through 10
-	let scores = props.scores.slice();
-
-	for (let i = scores.length; i < 10; i++) {
-		scores[i] = {
-			name: '',
-			outcome: '',
-			turns: '',
-			date: ''
-		}
+const toggle = () => {
+	let board = document.getElementById('scoresContainer');
+	if (board.style.right == '0px') {
+		board.style.right = '295px';
+	} else {
+		board.style.right = '0px';
 	}
+};
 
-	let visible = false;
-
-	const toggle = (e) => {
-		let board = document.getElementById('scoresContainer');
-		if (board.style.right == '0px') {
-			board.style.right = '295px';
-			visible = false;
-		} else {
-			board.style.right = '0px';
-			visible = true;
-		}
-	}
+const ScoreBoard = props => {
 
 	return (
 		<div id='scoresContainer' onClick={toggle}>
@@ -39,15 +23,15 @@ const ScoreBoard = (props) => {
 				<table id='scoreTable'>
 					<tbody>
 						{
-							scores.map((score, i) => 
-								<tr key={i}>
-									<td>{i + 1 + '.'}</td>
+							props.scores.map(score => (
+								<tr key={score.id}>
+									<td>{score.id}.</td>
 									<td>{score.name}</td>
 									<td>{score.outcome}&nbsp;&nbsp;</td>
 									<td>{score.turns}&nbsp;</td>
 									<td>{score.date}</td>
 								</tr>
-							)
+							))
 						}
 					</tbody>
 				</table>

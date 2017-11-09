@@ -8,7 +8,7 @@ Valid initials are three capital letters. Child of the Game component.
 import React from 'react';
 
 import { formatDate } from '../utils/leaderboardUtils';
-import { deleteScore, sendScore } from '../utils/serverCalls'; 
+import { sendScore } from '../utils/serverCalls'; 
 
 
 class SubmitScoreModal extends React.Component {
@@ -77,9 +77,6 @@ class SubmitScoreModal extends React.Component {
 	//we delete the score we are replacing, if applicable, submit our score and close the modal.
 	submit() {
 		if (this.state.name.length == 3) {
-			if (this.props.deleteId > 0) {
-				deleteScore(this.props.deleteId);
-			}
 
 			sendScore({
 				name: this.state.name,

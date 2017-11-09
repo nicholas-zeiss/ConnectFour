@@ -9,8 +9,8 @@ import React from 'react';
 
 import ConnectFour from '../utils/connectFour';
 
-import { isEligible, sortLeaderboard } from '../utils/leaderboardUtils';
-import { deleteScore, getScores, sendScore } from '../utils/serverCalls';
+import { isEligible } from '../utils/leaderboardUtils';
+import { getScores } from '../utils/serverCalls';
 
 import ConnectBoard from './ConnectBoard';
 import GameControl from './GameControl';				
@@ -43,15 +43,11 @@ class Game extends React.Component {
 		};
 
 
-		//initialize async call to get leaderboard
-		getScores(scores => {
-			this.setState({
-				leaderboard: sortLeaderboard(scores)
-			});
-		});
+		// initialize async call to get leaderboard
+		getScores(leaderboard => this.setState({ leaderboard }));
 
 
-		//this is the event listener we use to handle the keyboard being used to make a player move
+		// this is the event listener we use to handle the keyboard being used to make a player move
 		this.columnKeyListener = e => {
 			if (!isNaN(e.key) && 0 < Number(e.key) && Number(e.key) < 8) {
 				document.getElementById('col-button--'+ e.key).click();
@@ -142,7 +138,7 @@ class Game extends React.Component {
 			}
 
 			//either less than 10 scores total so any game is eligible, if not compare this game to lowest score in leaderboard
-			eligible = this.state.leaderboard.length < 10 || isEligible(gameScore, this.state.leaderboard);
+			eligible = isEligible(gameScore, this.state.leaderboard);
 		}
 
 
@@ -157,16 +153,8 @@ class Game extends React.Component {
 
 	//Called when the modal used to submit scores is closed. Either a score was submitted and we must
 	//reload the scores, or if not we must reset the game.
-	updateLeaderboard(reload) {
-		if (reload) {
-			getScores(scores => {
-				this.setState({
-					leaderboard: sortLeaderboard(scores)
-				}, this.clearBoard);
-			});
-		} else {
-			this.clearBoard();
-		}
+	updateLeaderboard() {
+		getScores(leaderboard => this.setState({ leaderboard }, this.clearBoard));
 	}
 
 
@@ -184,27 +172,17 @@ class Game extends React.Component {
 
 
 	showModal() {
-		this.setState({
-			showModal: true
-		});
+		this.setState({ showModal: true });
 	}
 
 
 	render() {
-
 		let rightStatus = {
 			'in play': `Turn count: ${this.state.board.turnCount}`,
 			W: 'You win!',
 			L: 'Computer wins!',
 			T: 'Tie!'
 		};
-
-		let deleteId = -1;
-
-		if (this.state.leaderboard.length == 10) {
-			deleteId = this.state.leaderboard[this.state.leaderboard.length - 1].id;
-		}
-
 
 		return (
 			<div id='app'>
@@ -213,7 +191,6 @@ class Game extends React.Component {
 					<SubmitScoreModal 
 						outcome={this.state.status} 
 						turns={this.state.board.turnCount} 
-						deleteId={deleteId}
 						close={this.updateLeaderboard.bind(this)}
 					/>
 					: null
