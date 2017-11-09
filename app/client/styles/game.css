@@ -1,6 +1,6 @@
 
 
-#gameContainer {
+#game-container {
 	position: relative;
 	min-width: 560px;
 	max-width: 850px;
@@ -18,7 +18,7 @@
 }
 
 
-	#gameContainer button {
+	#game-container button {
 		text-shadow: 1px 1px 1px #3f3f3f;
 		cursor: pointer;
 		color: #e2e0e0;
@@ -27,7 +27,7 @@
 	}
 
 
-	#gameContainer button:active, .active {
+	#game-container button:active, .active {
 		transform: translate(2px, 2px);
 		background-color: #106333 !important;
 	}
@@ -49,21 +49,16 @@
 		}
 
 
-		#leftStatus {
+		#left-status {
 			padding: 0 0 2px 10px;
 			margin: 0 auto 2px 5px;
 		}
 
 
-		#rightStatus {
+		#right-status {
 			padding: 0 10px 2px 0;
 			margin: 0 5px 2px auto;
 		}
-
-
-	#canvasContainer {
-		/*margin: 0;*/
-	}
 
 
 		canvas {
@@ -73,14 +68,14 @@
 		}
 
 	
-	#inputContainer {
+	#input-container {
 		display: flex;
 		justify-content: center;
 		margin: 0;
 	}
 
 
-		#inputContainer > button {
+		#input-container > button {
 			width: calc(calc(100% - 60px) / 16);
 			height: 30px;
 			margin: 4px calc(calc(100% - 60px) / 32) 0 calc(calc(100% - 60px) / 32);
@@ -92,12 +87,12 @@
 		}
 
 
-	#gameControl {
+	#game-control {
 		margin: 10px 15px;
 	}
 
 
-			#gameControl > button {
+			#game-control > button {
 				padding: 5px 10px;
 				border: 1px solid black;
 				border-radius: 5px;
@@ -106,14 +101,14 @@
 			}
 
 
-				#submitScore{
+				#submit-score{
 					float: left;
 					font-size: 35px;
 					background-color: #d83422 !important;
 				}
 
 
-				#newGame {
+				#new-game {
 					float: right;
 					margin-top: 15px;
 					font-size: 22px;

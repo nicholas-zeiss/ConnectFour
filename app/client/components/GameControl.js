@@ -11,7 +11,7 @@ const GameControl = props => {
 	const onClick = e => {
 		const target = e.target;
 
-		target.id == 'newGame' ? props.clearBoard() : props.showModal();
+		target.id == 'new-game' ? props.clearBoard() : props.showModal();
 		target.style.transform = 'translate(2px, 2px)';
 		target.style.backgroundColor = '#106333';
 
@@ -20,10 +20,10 @@ const GameControl = props => {
 	};
 
 	return (
-		<div id='gameControl'>
+		<div id='game-control'>
 			<button
 				disabled={ !props.eligible }
-				id='submitScore'
+				id='submit-score'
 				onClick={ onClick }
 				style={ { visibility: props.eligible ? 'visible' : 'hidden' } }
 				type='button'
@@ -31,7 +31,7 @@ const GameControl = props => {
 				Submit Score
 			</button>
 
-			<button id='newGame' onClick={ onClick }>
+			<button id='new-game' onClick={ onClick }>
 				Reset
 			</button>
 		</div>

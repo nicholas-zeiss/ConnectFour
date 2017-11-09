@@ -24,12 +24,12 @@ class SubmitScoreModal extends React.Component {
 
 
 	componentDidMount() {
-		window.addEventListener('keydown', this.keydownListener);
+		window.addEventListener('keydown', this.keydownListener.bind(this));
 		
 		// without the timeout the style will still change but no css transition occurs
 		setTimeout(() =>{
 			const modal = document.getElementById('modal-content');
-			modal.style.bottom = '0px';
+			modal.style.top = (window.innerHeight - modal.clientHeight) / 2 + 'px';
 		}, 0);
 
 		const inputElement = document.getElementById('name-input');
@@ -98,9 +98,9 @@ class SubmitScoreModal extends React.Component {
 	close(reload) {
 		let modal = document.getElementById('modal-content');
 
-		modal.style.bottom = '1000px';
+		modal.style.top = -modal.clientHeight + 'px';
 
-		setTimeout(this.props.close.bind(null, reload), 700);
+		setTimeout(this.props.close.bind(null, reload), 500);
 	}
 
 

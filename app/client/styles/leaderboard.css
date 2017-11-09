@@ -9,7 +9,7 @@
 	align-items: center;
 	margin-right: 0;
 	text-shadow: none;
-	transition: right 750ms ease-out;
+	transition: right .4s ease-out;
 }
 
 

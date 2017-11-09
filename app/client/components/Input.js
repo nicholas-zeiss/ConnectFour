@@ -22,7 +22,7 @@ const Input = (props) => {
 	};
 
 	return (
-		<div id = 'inputContainer'>
+		<div id = 'input-container'>
 			{
 				new Array(7)
 					.fill(1)

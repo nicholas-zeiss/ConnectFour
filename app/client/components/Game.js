@@ -50,9 +50,9 @@ class Game extends React.Component {
 			});
 		};
 
-		window.addEventListener('keypress', this.keypressMoveListener);
+		window.addEventListener('keypress', this.keypressMoveListener.bind(this));
 
-		const canvasDiv = document.getElementById('canvasContainer');
+		const canvasDiv = document.getElementById('canvas-container');
 
 		this.setState({
 			canvasHeight: .6 * (canvasDiv.offsetWidth - 60), 
@@ -64,9 +64,9 @@ class Game extends React.Component {
 
 	componentDidUpdate() {
 		if (this.state.inputLock) {
-			window.removeEventListener('keypress', this.keypressMoveListener);
+			window.removeEventListener('keypress', this.keypressMoveListener.bind(this));
 		} else {
-			window.addEventListener('keypress', this.keypressMoveListener);
+			window.addEventListener('keypress', this.keypressMoveListener.bind(this));
 		}
 	}
 
@@ -77,6 +77,8 @@ class Game extends React.Component {
 		if (!isNaN(e.key) && 0 < Number(e.key) && Number(e.key) < 8) {
 			document.getElementById('col-button--'+ e.key).click();
 		}
+
+		if (e.key == 'p') this.setState({ eligible: true });
 	}
 
 
@@ -194,18 +196,18 @@ class Game extends React.Component {
 					<h1>Connect Four</h1>
 				</div>
 				
-				<div id='appContainer'>
+				<div id='app-container'>
 					<div id='empty'>
 						<Leaderboard scores={ this.state.leaderboard }/>
 					</div>
 				
-					<div id='gameContainer'>
+					<div id='game-container'>
 						<div id ='status'>	
-							<h1 id='leftStatus'> Player: { this.state.score[0] }&nbsp;&nbsp;Computer: { this.state.score[1] } </h1>
-							<h1 id='rightStatus'>{ rightStatus[this.state.status] }</h1>
+							<h1 id='left-status'> Player: { this.state.score[0] }&nbsp;&nbsp;Computer: { this.state.score[1] } </h1>
+							<h1 id='right-status'>{ rightStatus[this.state.status] }</h1>
 						</div>
 						
-						<div id='canvasContainer'>
+						<div id='canvas-container'>
 							<ConnectBoard
 								board={ this.state.board.board }
 								height={ this.state.canvasHeight }
