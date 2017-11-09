@@ -10,13 +10,25 @@ const columns = 7;
 const rows = 6;
 
 class ConnectBoard extends React.Component {
+	shouldComponentUpdate(nextProps) {
+		if (this.props.width != nextProps.width || this.props.height != nextProps.height) {
+			return true;
+		}
+
+		if (this.props.board.toString() != nextProps.board.toString()) {
+			this.drawCanvas(nextProps.board);
+		}
+
+		return false;
+	}
+
+
 	componentDidUpdate() {
 		this.drawCanvas();
 	}
 
 
-	drawCanvas() {
-
+	drawCanvas(board = this.props.board) {
 		// draw background
 		this.container.fillStyle = '#2148bc';
 		this.container.fillRect(0, 0, this.props.width, this.props.height);
@@ -34,7 +46,7 @@ class ConnectBoard extends React.Component {
 				this.container.strokeStyle = 'black';
         
 				// background color for an empty chip, yellow for player, red for computer
-				this.container.fillStyle = [ '#d6e1ff', '#f9d000', 'red' ][this.props.board[r][c]];			
+				this.container.fillStyle = [ '#d6e1ff', '#f9d000', 'red' ][board[r][c]];			
         
 				this.container.beginPath();
 				this.container.arc((c + 1) * DELTA_X, (r + 1) * DELTA_Y, RADIUS - 1, 0 , 2 * Math.PI, false);
