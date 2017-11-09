@@ -11,7 +11,7 @@ import React from 'react';
 import ConnectBoard from './ConnectBoard';
 import GameControl from './GameControl';				
 import Input from './Input';						
-import ScoreBoard from './ScoreBoard';	
+import Leaderboard from './Leaderboard';	
 import SubmitScoreModal from './SubmitScoreModal';
 
 import ConnectFour from '../utils/connectFour';
@@ -196,7 +196,7 @@ class Game extends React.Component {
 				
 				<div id='appContainer'>
 					<div id='empty'>
-						<ScoreBoard scores={ this.state.leaderboard }/>
+						<Leaderboard scores={ this.state.leaderboard }/>
 					</div>
 				
 					<div id='gameContainer'>
