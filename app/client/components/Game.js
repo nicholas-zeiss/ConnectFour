@@ -25,7 +25,6 @@ class Game extends React.Component {
 
 		this.state = {
 			board: new ConnectFour(),
-			canvasDiv: null,
 			canvasWidth: 400,
 			canvasHeight: 300,
 			eligible: false,						// if completed game is eligible to be on leaderboard
@@ -42,50 +41,46 @@ class Game extends React.Component {
 	}
 
 
-	// Grab a reference to the div where canvas renders so we can size the canvas appropriately,
-	// also add a listener for a window resize to update those dimensions
+	// Size the canvas appropriately based off of this.canvasDiv which is set in a ref,
+	// also add a listener for a window resize to update those dimensions and for keypresses
+	// used for player movement
 	componentDidMount() {
+		window.addEventListener('keypress', this.keypressMoveListener);
+		
 		window.onresize = () => { 
 			this.setState({
-				canvasHeight: .6 * (this.state.canvasDiv.offsetWidth - 60),
-				canvasWidth: this.state.canvasDiv.offsetWidth - 60
+				canvasHeight: .6 * (this.canvasDiv.offsetWidth - 60),
+				canvasWidth: this.canvasDiv.offsetWidth - 60
 			});
 		};
 
-		window.addEventListener('keypress', this.keypressMoveListener.bind(this));
-
-		const canvasDiv = document.getElementById('canvas-container');
-
 		this.setState({
-			canvasHeight: .6 * (canvasDiv.offsetWidth - 60), 
-			canvasWidth: canvasDiv.offsetWidth - 60,
-			canvasDiv: canvasDiv
+			canvasHeight: .6 * (this.canvasDiv.offsetWidth - 60), 
+			canvasWidth: this.canvasDiv.offsetWidth - 60,
 		});
 	}
 
 
 	componentDidUpdate() {
 		if (this.state.inputLock) {
-			window.removeEventListener('keypress', this.keypressMoveListener.bind(this));
+			window.removeEventListener('keypress', this.keypressMoveListener);
 		} else {
-			window.addEventListener('keypress', this.keypressMoveListener.bind(this));
+			window.addEventListener('keypress', this.keypressMoveListener);
 		}
 	}
 
 
 	// handles user making a move via keyboard, move is made by clicking corresponding button
 	// so that css effects are activated
-	keypressMoveListener(e) {
+	keypressMoveListener = e => {
 		if (!isNaN(e.key) && 0 < Number(e.key) && Number(e.key) < 8) {
 			document.getElementById('col-button--'+ e.key).click();
 		}
-
-		if (e.key == 'p') this.setState({ eligible: true });
 	}
 
 
 	// handles user moves
-	selectColumn(col) {
+	selectColumn = col => {
 		if (this.state.status == 'in play' && !this.state.inputLock && this.state.board.isMoveLegal(col)) {
 			
 			// 1 is the player chip, computer uses 2
@@ -118,13 +113,11 @@ class Game extends React.Component {
 		let score = this.state.score;
 		let eligible = false;
 
-
 		if (status != 'in play') {
 			inputLock = true;
 
 			if (status == 'W') {
-				score[0]++;
-			
+				score[0]++;	
 			} else if (status == 'L') {
 				score[1]++;
 			}
@@ -134,10 +127,9 @@ class Game extends React.Component {
 				turns: this.state.board.turnCount
 			};
 
-			// compare this game to lowest score in leaderboard
+			// determine if eligible to submit a high score
 			eligible = isEligible(gameScore, this.state.leaderboard);
 		}
-
 
 		this.setState({
 			status,
@@ -148,8 +140,6 @@ class Game extends React.Component {
 	}
 
 
-	// Called when the modal used to submit scores is closed. Either a score was submitted and we must
-	// reload the scores, or if not we must reset the game.
 	updateLeaderboard = leaderboard => {
 		if (leaderboard) {
 			this.setState({ leaderboard }, this.clearBoard);
@@ -159,8 +149,7 @@ class Game extends React.Component {
 	}
 
 
-	// reset game
-	clearBoard() {
+	clearBoard = () => {
 		this.state.board.clear();
 		
 		this.setState({
@@ -172,7 +161,7 @@ class Game extends React.Component {
 	}
 
 
-	showModal() {
+	showModal = () => {
 		this.setState({ showModal: true });
 	}
 
@@ -190,7 +179,7 @@ class Game extends React.Component {
 				{
 					this.state.showModal ? 
 						<SubmitScoreModal 
-							close={ this.updateLeaderboard.bind(this) }
+							close={ this.updateLeaderboard }
 							outcome={ this.state.status } 
 							turns={ this.state.board.turnCount } 
 						/>
@@ -210,7 +199,7 @@ class Game extends React.Component {
 							<h1 id='right-status'>{ rightStatus[this.state.status] }</h1>
 						</div>
 						
-						<div id='canvas-container'>
+						<div id='canvas-container' ref={ el => this.canvasDiv = el }>
 							<ConnectBoard
 								board={ this.state.board.board }
 								height={ this.state.canvasHeight }
@@ -218,12 +207,12 @@ class Game extends React.Component {
 							/>
 						</div>
 						
-						<Input inputLock={ this.state.inputLock } makeMove={ this.selectColumn.bind(this) }/>
+						<Input inputLock={ this.state.inputLock } makeMove={ this.selectColumn }/>
 						
 						<GameControl 
-							clearBoard={ this.clearBoard.bind(this) } 
+							clearBoard={ this.clearBoard } 
 							eligible={ this.state.eligible } 
-							showModal={ this.showModal.bind(this) }
+							showModal={ this.showModal }
 							status={ this.state.status } 
 						/>
 					</div>
