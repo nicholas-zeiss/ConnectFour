@@ -36,7 +36,9 @@ class Game extends React.Component {
 			status: 'in play',					// either 'in play', 'W', 'L', or 'T'
 		};
 
-		getScores(leaderboard => this.setState({ leaderboard }));
+		getScores()
+			.then(leaderboard => this.setState({ leaderboard }))
+			.catch(err => console.log(err));
 	}
 
 
@@ -148,8 +150,12 @@ class Game extends React.Component {
 
 	// Called when the modal used to submit scores is closed. Either a score was submitted and we must
 	// reload the scores, or if not we must reset the game.
-	updateLeaderboard() {
-		getScores(leaderboard => this.setState({ leaderboard }, this.clearBoard));
+	updateLeaderboard(leaderboard) {
+		if (leaderboard) {
+			this.setState({ leaderboard }, this.clearBoard);
+		} else {
+			this.clearBoard();
+		}
 	}
 
 
@@ -180,8 +186,7 @@ class Game extends React.Component {
 		};
 
 		return (
-			<div id='app'>
-				
+			<div id='app'>		
 				{
 					this.state.showModal ? 
 						<SubmitScoreModal 

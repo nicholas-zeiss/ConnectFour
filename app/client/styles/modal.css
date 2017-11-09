@@ -51,28 +51,27 @@
 			}
 
 
-				#submit-name-input {
+				/*#submit-name-input {
 					display: flex;
 					flex-direction: row;
 					align-items: center;
 					justify-content: flex-start;
-				}
+				}*/
 
 					#submit-name-input > label {
-						padding-bottom: 5px;
-						margin-right: 10px;
 						font-size: 35px;
 					}
 
 
-					#submit-name-input > input {
+					#submit-name-input input {
+						margin-left: 10px;
 						padding: 0 15px;
 						border-radius: 2px;
 						border: 1px solid #c42311;
 						outline: none;
 						box-shadow: inset 0 0 5px 0px #ff6b5b;
 						letter-spacing: 5px;
-						font-size: 50px;
+						font-size: 40px;
 						text-align: center;
 						color: #d6d6d6;
 						background-color: #631208;

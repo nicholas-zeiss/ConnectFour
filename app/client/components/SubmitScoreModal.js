@@ -46,8 +46,6 @@ class SubmitScoreModal extends React.Component {
 	keydownListener(e) {
 		if (e.key == 'Escape') {
 			this.close(false);
-		} else if (e.key == 'Enter' && document.activeElement == this.state.inputElement) {
-			this.submit();
 		}
 	}
 
@@ -71,7 +69,9 @@ class SubmitScoreModal extends React.Component {
 
 	// If the submit button is clicked without a valid name we show the error message. If the name is valid
 	// we delete the score we are replacing, if applicable, submit our score and close the modal.
-	submit() {
+	submit(e) {
+		e.preventDefault();
+
 		if (this.state.name.length == 3) {
 			const score = {
 				date: formatDate(),
@@ -80,7 +80,9 @@ class SubmitScoreModal extends React.Component {
 				turns: this.props.turns
 			};
 
-			sendScore(score, this.close.bind(this, true));
+			sendScore(score)
+				.then(leaderboard => this.close(leaderboard))
+				.catch(err => this.close(null));
 
 		} else {
 			this.setState({ showError: true });
@@ -95,12 +97,12 @@ class SubmitScoreModal extends React.Component {
 	}
 
 	// allows the css transition of the modal rising to the top of the page to occur before this component unmounts
-	close(reload) {
+	close(leaderboard) {
 		let modal = document.getElementById('modal-content');
 
 		modal.style.top = -modal.clientHeight + 'px';
 
-		setTimeout(this.props.close.bind(null, reload), 500);
+		setTimeout(this.props.close.bind(null, leaderboard), 500);
 	}
 
 
@@ -118,18 +120,23 @@ class SubmitScoreModal extends React.Component {
 
 					<h1> Congratulations! <br/><small> You&apos;ve earned a place on the leaderboard! </small></h1>
 					
-					<div id='submit-name'>
+					<form id='submit-name'>
 						<div id='submit-name-input'>
-							<label> Initials: </label>
-							
-							<input 
-								id='name-input'
-								maxLength='3' 
-								onChange={ this.changeName.bind(this) } 
-								size='4'
-								type='text' 
-								value={ this.state.name }
-							/>
+							<label>
+								Initials: 
+								<input 
+									id='name-input'
+									maxLength='3'
+									minLength='3'
+									onChange={ this.changeName.bind(this) }
+									pattern='[A-Z]{3}'
+									size='4'
+									type='text' 
+									value={ this.state.name }
+									autoFocus
+									required
+								/>
+							</label>	
 
 							<span style={ { visibility: this.state.showError ? 'visible' : 'hidden' } }>
 								3 letters required
@@ -138,11 +145,11 @@ class SubmitScoreModal extends React.Component {
 
 						<button 
 							onClick={ this.submit.bind(this) }
-							type='button'
+							type='submit'
 						>
 							Submit
 						</button>
-					</div>
+					</form>
 				</div>
 			</div>
 		);

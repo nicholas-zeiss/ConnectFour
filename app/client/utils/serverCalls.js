@@ -6,33 +6,32 @@
 **/
 
 
-// Receives the leaderboard in response.
-const getScores = cb => {
-	fetch('/scores', { method: 'GET' })
-		.then(res => res.json())
-		.then(cb);
+const handleResponse = res => {
+	if (res.status == 200) {
+		return res.json();
+	} else {
+		throw res.status;
+	}
 };
+
+
+// Receives the leaderboard in response.
+const getScores = () => (
+	fetch('/scores', { method: 'GET' })
+		.then(handleResponse)
+);
 
 
 // Sends a score to be added to the leaderboard, if successful we get the new leaderboard in response.
 // If not we get a 400 code.
-const sendScore = (score, cb) => {
-	cb = cb || (() => {});
-	
+const sendScore = score => (	
 	fetch('/scores', {
 		method: 'POST',
 		body: JSON.stringify(score),
 		headers: { 'Content-Type': 'application/json' }
 	})
-		.then(res => {
-			if (res.status == 200) {
-				return res.json();
-			} else {
-				return res.status;
-			}
-		})
-		.then(cb);
-};
+		.then(handleResponse)
+);
 
 
 export { getScores, sendScore };
