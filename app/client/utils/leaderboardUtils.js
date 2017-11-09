@@ -14,10 +14,10 @@ const scoreMap = {
 const evalScore = score => scoreMap[score.outcome] + score.turns;
 
 // Determines if a game is good enough for the leaderboard
-const isEligible = (score, board) => evalScore(score) > evalScore(board[board.length - 1]);
+export const isEligible = (score, board) => evalScore(score) > evalScore(board[board.length - 1]);
 
 // Returns the current date in MM-DD-YY format
-const formatDate = () => {
+export const formatDate = () => {
 	const now = new Date();
 	
 	const m = String(now.getMonth() + 1).padStart(2, '0');
@@ -26,7 +26,4 @@ const formatDate = () => {
 	
 	return `${ m }-${ d }-${ y }`;
 };
-
-
-export { formatDate, isEligible };
 

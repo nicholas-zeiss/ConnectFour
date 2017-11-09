@@ -16,7 +16,6 @@ class SubmitScoreModal extends React.Component {
 		super(props);
 
 		this.state = {
-			inputElement: null,
 			name: '',
 			showError: false
 		};
@@ -24,17 +23,12 @@ class SubmitScoreModal extends React.Component {
 
 
 	componentDidMount() {
-		window.addEventListener('keydown', this.keydownListener.bind(this));
+		window.addEventListener('keydown', this.keydownListener);
 		
-		// without the timeout the style will still change but no css transition occurs
+		// timeout to allow browser to render modal so that these height properties are accurate
 		setTimeout(() =>{
-			const modal = document.getElementById('modal-content');
-			modal.style.top = (window.innerHeight - modal.clientHeight) / 2 + 'px';
+			this.modalContent.style.top = (window.innerHeight - this.modalContent.clientHeight) / 2 + 'px';
 		}, 0);
-
-		const inputElement = document.getElementById('name-input');
-		
-		this.setState({ inputElement });
 	}
 
 
@@ -43,15 +37,15 @@ class SubmitScoreModal extends React.Component {
 	}
 
 
-	keydownListener(e) {
+	keydownListener = e => {
 		if (e.key == 'Escape') {
-			this.close(false);
+			this.close.call(this, false);
 		}
-	}
+	};
 
 
 	// Validates input to initials form, updates state and error message as appropriate
-	changeName(e) {
+	changeName = e => {
 		if (!/[^a-zA-Z]/g.test(e.target.value)) {
 			let error = this.state.showError;
 
@@ -64,12 +58,12 @@ class SubmitScoreModal extends React.Component {
 				showError: error
 			});
 		}
-	}
+	};
 
 
 	// If the submit button is clicked without a valid name we show the error message. If the name is valid
 	// we delete the score we are replacing, if applicable, submit our score and close the modal.
-	submit(e) {
+	submit = e => {
 		e.preventDefault();
 
 		if (this.state.name.length == 3) {
@@ -87,32 +81,37 @@ class SubmitScoreModal extends React.Component {
 		} else {
 			this.setState({ showError: true });
 		}
-	}
+	};
 
 
-	clickedOutside(e) {
-		if (e.target == document.getElementById('modal')) {
+	clickedOutside = e => {
+		if (e.target == this.modal) {
 			this.close(false);
 		}
-	}
+	};
 
 	// allows the css transition of the modal rising to the top of the page to occur before this component unmounts
-	close(leaderboard) {
-		let modal = document.getElementById('modal-content');
-
-		modal.style.top = -modal.clientHeight + 'px';
-
+	close = leaderboard => {
+		this.modalContent.style.top = -this.modalContent.clientHeight + 'px';
 		setTimeout(this.props.close.bind(null, leaderboard), 500);
-	}
+	};
 
 
 	render() {
 		return (
-			<div id='modal' onClick={ this.clickedOutside.bind(this) }>
-				<div id='modal-content' style={ { bottom:'500px' } }>
+			<div
+				id='modal'
+				onClick={ this.clickedOutside }
+				ref={ modal => this.modal = modal }
+			>
+				<div
+					id='modal-content'
+					ref={ content => this.modalContent = content }
+					style={ { bottom:'500px' } }
+				>
 					<button 
 						id='close-modal' 
-						onClick={ this.close.bind(this, false) }
+						onClick={ this.close.bind(null, false) }
 						type='button' 
 					>
 						&times;
@@ -128,7 +127,7 @@ class SubmitScoreModal extends React.Component {
 									id='name-input'
 									maxLength='3'
 									minLength='3'
-									onChange={ this.changeName.bind(this) }
+									onChange={ this.changeName }
 									pattern='[A-Z]{3}'
 									size='4'
 									type='text' 
@@ -136,7 +135,7 @@ class SubmitScoreModal extends React.Component {
 									autoFocus
 									required
 								/>
-							</label>	
+							</label>
 
 							<span style={ { visibility: this.state.showError ? 'visible' : 'hidden' } }>
 								3 letters required
@@ -144,7 +143,7 @@ class SubmitScoreModal extends React.Component {
 						</div>
 
 						<button 
-							onClick={ this.submit.bind(this) }
+							onClick={ this.submit }
 							type='submit'
 						>
 							Submit

@@ -14,17 +14,14 @@ const handleResponse = res => {
 	}
 };
 
-
 // Receives the leaderboard in response.
-const getScores = () => (
+export const getScores = () => (
 	fetch('/scores', { method: 'GET' })
 		.then(handleResponse)
 );
 
-
 // Sends a score to be added to the leaderboard, if successful we get the new leaderboard in response.
-// If not we get a 400 code.
-const sendScore = score => (	
+export const sendScore = score => (	
 	fetch('/scores', {
 		method: 'POST',
 		body: JSON.stringify(score),
@@ -32,7 +29,4 @@ const sendScore = score => (
 	})
 		.then(handleResponse)
 );
-
-
-export { getScores, sendScore };
 
