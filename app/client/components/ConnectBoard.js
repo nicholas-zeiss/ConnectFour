@@ -6,58 +6,41 @@
 
 import React from 'react';
 
+const columns = 7;
+const rows = 6;
 
 class ConnectBoard extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			columns: 7,
-			rows: 6,
-			container : null,					// will hold the canvas element's 2d rendering context
-		};
-	}
-
-
-	componentDidMount() {
-		this.setState({
-			container: document.getElementById('canvas').getContext('2d')
-		});
-	}
-
-
 	componentDidUpdate() {
 		this.drawCanvas();
 	}
 
 
 	drawCanvas() {
-		const container = this.state.container;
 
 		// draw background
-		container.fillStyle = '#2148bc';
-		container.fillRect(0, 0, this.props.width, this.props.height);
+		this.container.fillStyle = '#2148bc';
+		this.container.fillRect(0, 0, this.props.width, this.props.height);
 
 		// calculate step between chips
-		const DELTA_X = Math.floor(this.props.width / (this.state.columns + 1));
-		const DELTA_Y = Math.floor(this.props.height / (this.state.rows + 1));
+		const DELTA_X = Math.floor(this.props.width / (columns + 1));
+		const DELTA_Y = Math.floor(this.props.height / (rows + 1));
 		
-		// As DELTA_Y < DELTA_X, our chip radius depends on that
+		// As DELTA_Y < DELTA_X, our chip radius depends on the former
 		const RADIUS = DELTA_Y * .4; 														
 
 		// draw each chip
-		for (let r = 0; r < this.state.rows; r++) {
-			for (let c = 0; c < this.state.columns; c++) {
-				container.strokeStyle = 'black';
+		for (let r = 0; r < rows; r++) {
+			for (let c = 0; c < columns; c++) {
+				this.container.strokeStyle = 'black';
         
 				// background color for an empty chip, yellow for player, red for computer
-				container.fillStyle = [ '#d6e1ff', '#f9d000', 'red' ][this.props.board[r][c]];			
+				this.container.fillStyle = [ '#d6e1ff', '#f9d000', 'red' ][this.props.board[r][c]];			
         
-				container.beginPath();
-				container.arc((c + 1) * DELTA_X, (r + 1) * DELTA_Y, RADIUS - 1, 0 , 2 * Math.PI, false);
-				container.fill();
-				container.stroke();
-				container.closePath();
+				this.container.beginPath();
+				this.container.arc((c + 1) * DELTA_X, (r + 1) * DELTA_Y, RADIUS - 1, 0 , 2 * Math.PI, false);
+				this.container.fill();
+				this.container.stroke();
+				this.container.closePath();
 			}
 		}
 	}
@@ -67,7 +50,7 @@ class ConnectBoard extends React.Component {
 		return (
 			<canvas
 				height={ this.props.height }
-				id='canvas'
+				ref={ canvas => this.container = canvas ? canvas.getContext('2d') : null }
 				width={ this.props.width }
 			>
 			</canvas>
