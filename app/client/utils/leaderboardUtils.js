@@ -11,10 +11,13 @@ const scoreMap = {
 	W: 10000
 };
 
-const evalScore = score => scoreMap[score.outcome] + score.turns;
+const evalScore = (outcome, turns) => scoreMap[outcome] + turns;
 
 // Determines if a game is good enough for the leaderboard
-export const isEligible = (score, board) => evalScore(score) > evalScore(board[board.length - 1]);
+export const isEligible = (outcome, turns, board) => {
+	let toBeat = board[board.length - 1];
+	return evalScore(outcome, turns) > evalScore(toBeat.outcome, toBeat.turns);
+};
 
 // Returns the current date in MM-DD-YY format
 export const formatDate = () => {
@@ -24,6 +27,6 @@ export const formatDate = () => {
 	const d = String(now.getDate()).padStart(2, '0');
 	const y = String(now.getFullYear() % 100).padStart(2, '0');
 	
-	return `${ m }-${ d }-${ y }`;
+	return `${m}-${d}-${y}`;
 };
 

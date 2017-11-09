@@ -29,7 +29,7 @@
   "devDependencies": {},
   "scripts": {
     "manipulate": "node app/server/db/manipulate.js",
-    "prestart": "webpack --optimize-minize --watch &",
+    "prestart": "webpack --optimize-minimize --watch &",
     "start": "nodemon app/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

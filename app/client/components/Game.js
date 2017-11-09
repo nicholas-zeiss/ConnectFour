@@ -42,100 +42,68 @@ class Game extends React.Component {
 
 
 	// Size the canvas appropriately based off of this.canvasDiv which is set in a ref,
-	// also add a listener for a window resize to update those dimensions and for keypresses
+	// also add listeners for a window resize to update those dimensions and for keypresses
 	// used for player movement
 	componentDidMount() {
-		window.addEventListener('keypress', this.keypressMoveListener);
-		
-		window.onresize = () => { 
-			this.setState({
-				canvasHeight: .6 * (this.canvasDiv.offsetWidth - 60),
-				canvasWidth: this.canvasDiv.offsetWidth - 60
-			});
-		};
-
-		this.setState({
-			canvasHeight: .6 * (this.canvasDiv.offsetWidth - 60), 
-			canvasWidth: this.canvasDiv.offsetWidth - 60,
+		window.addEventListener('keypress', e => {
+			if (!this.state.inputLock && 0 < Number(e.key) && Number(e.key) < 8) {
+				document.getElementById('col-button--' + e.key).click();
+			}
 		});
+		
+		const setCanvasSize = () => this.setState({
+			canvasHeight: .6 * (this.canvasDiv.offsetWidth - 60),
+			canvasWidth: this.canvasDiv.offsetWidth - 60
+		});
+
+		window.onresize = setCanvasSize;
+		setCanvasSize();
 	}
 
 
-	componentDidUpdate() {
-		if (this.state.inputLock) {
-			window.removeEventListener('keypress', this.keypressMoveListener);
-		} else {
-			window.addEventListener('keypress', this.keypressMoveListener);
-		}
-	}
-
-
-	// handles user making a move via keyboard, move is made by clicking corresponding button
-	// so that css effects are activated
-	keypressMoveListener = e => {
-		if (!isNaN(e.key) && 0 < Number(e.key) && Number(e.key) < 8) {
-			document.getElementById('col-button--'+ e.key).click();
-		}
-	}
-
-
-	// handles user moves
-	selectColumn = col => {
-		if (this.state.status == 'in play' && !this.state.inputLock && this.state.board.isMoveLegal(col)) {
-			
+	makePlayerMove = col => {
+		if (this.state.board.isMoveLegal(col)) {			
 			// 1 is the player chip, computer uses 2
 			this.state.board.makeMove(col, 1);
 			this.state.board.updateStatus();
 
-			// make the computer's move if user didn't just win/tie
-			if (this.state.board.status == 'in play') {			
-				
-				this.updateGame(true);		
-
+			if (this.state.board.status == 'in play') {
 				// wait a short delay (for ux purposes) to make AI's move	
-				setTimeout(() => {
-					this.state.board.makeComputerMove();
-					this.state.board.updateStatus();
-					this.updateGame(false);
-				}, 500);
+				setTimeout(this.makeComputerMove, 500);
+				this.setState({ inputLock: true });
 				
-			// game just ended, update score				
 			} else {							
-				this.updateGame(true);
+				this.gameEnded(this.state.board.status);
 			}
 		}
 	}
 	
 
-	// updates game score, if game is in play or if not who won, locks/unlocks user input
-	updateGame(inputLock) {
-		const status = this.state.board.status;
+	makeComputerMove = () => {
+		this.state.board.makeComputerMove();
+		this.state.board.updateStatus();
+
+		if (this.state.board.status == 'in play') {
+			this.setState({ inputLock: false });
+		} else {
+			this.gameEnded(this.state.board.status);
+		}
+	}
+
+
+	gameEnded(status) {
 		let score = this.state.score;
-		let eligible = false;
 
-		if (status != 'in play') {
-			inputLock = true;
-
-			if (status == 'W') {
-				score[0]++;	
-			} else if (status == 'L') {
-				score[1]++;
-			}
-
-			let gameScore = {
-				outcome: status,
-				turns: this.state.board.turnCount
-			};
-
-			// determine if eligible to submit a high score
-			eligible = isEligible(gameScore, this.state.leaderboard);
+		if (status == 'W') {
+			score[0]++;	
+		} else if (status == 'L') {
+			score[1]++;
 		}
 
 		this.setState({
-			status,
+			eligible: isEligible(status, this.state.board.turnCount, this.state.leaderboard),
 			score,
-			inputLock,
-			eligible
+			status
 		});
 	}
 
@@ -161,11 +129,6 @@ class Game extends React.Component {
 	}
 
 
-	showModal = () => {
-		this.setState({ showModal: true });
-	}
-
-
 	render() {
 		const rightStatus = {
 			'in play': 'Turn count: ' + this.state.board.turnCount,
@@ -173,6 +136,9 @@ class Game extends React.Component {
 			L: 'Computer wins!',
 			T: 'Tie!'
 		};
+
+		const boardCopy = this.state.board.board
+			.map(row => [ ...row ]);
 
 		return (
 			<div id='app'>		
@@ -195,24 +161,24 @@ class Game extends React.Component {
 				
 					<div id='game-container'>
 						<div id ='status'>	
-							<h1 id='left-status'> Player: { this.state.score[0] }&nbsp;&nbsp;Computer: { this.state.score[1] } </h1>
+							<h1 id='left-status'>Player: { this.state.score[0] }&nbsp;&nbsp;Computer: { this.state.score[1] }</h1>
 							<h1 id='right-status'>{ rightStatus[this.state.status] }</h1>
 						</div>
 						
 						<div id='canvas-container' ref={ el => this.canvasDiv = el }>
 							<ConnectBoard
-								board={ this.state.board.board }
+								board={ boardCopy }
 								height={ this.state.canvasHeight }
 								width={ this.state.canvasWidth }
 							/>
 						</div>
 						
-						<Input inputLock={ this.state.inputLock } makeMove={ this.selectColumn }/>
+						<Input inputLock={ this.state.inputLock } makeMove={ this.makePlayerMove }/>
 						
 						<GameControl 
 							clearBoard={ this.clearBoard } 
 							eligible={ this.state.eligible } 
-							showModal={ this.showModal }
+							showModal={ this.setState.bind(this, { showModal: true }) }
 							status={ this.state.status } 
 						/>
 					</div>
