@@ -17,53 +17,68 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../../app')));
 
 
+
+//--------------------------------------------------------------
+//												Helpers
+//--------------------------------------------------------------
+
+const scoreMap = {
+	L: 0,
+	T: 1000,
+	W: 10000
+};
+
+const evalScore = score => scoreMap[score.outcome] + score.turns;
+
+const sendScores = res => {
+	dbController
+		.getScores()
+		.then(scores => res.status(200).json(scores))
+		.catch(err => res.sendStatus(500));
+};
+
+
+
+//--------------------------------------------------------------
+//												API Endpoints
+//--------------------------------------------------------------
+
 // renders the app
 app.get('/', (req, res) => {
 	res.sendFile('index.html');
 });
 
+
 // sends all leaderboard scores
-app.get('/scores', (req, res) => {
-	dbController
-		.getScores()
-		.then(rows => res.status(200).json(rows));
-});
+app.get('/scores', (req, res) => sendScores(res));
 
 
-// receives a score to append to database, if score is invalid or the database cannot write it we return a 400 code
+// receives a score to append to database, checks score validity and updates database if valid
 app.post('/scores', (req, res) => {
-	if (dbController.validateScore(req.body)) {		
+	if (dbController.validateScore(req.body)) {
+		const newScore = evalScore(req.body);
+
 		dbController
-			.insertScore(req.body)
-			.then(() => {
-				dbController
-					.getScores()
-					.then(rows => res.status(201).json(rows));
-			
+			.getScores()
+			.then(scores => {
+				for (var i = 0; i < scores.length; i++) {
+					if (evalScore(scores[i]) < newScore) {
+						dbController
+							.setScore(req.body, i + 1)
+							.then(sendScores.bind(null, res))
+							.catch(err => res.sendStatus(500));
+
+						return;
+					}
+				}
+				// only reached if score not high enough to be in database
+				res.sendStatus(400);
 			})
-			.catch(() =>res.sendStatus(400));
+			.catch(err => res.sendStatus(500));
 	
 	} else {
 		res.sendStatus(400);
 	}
-});
-
-
-// Deletes a score from the database to clear space for a new score as we only store the ten highest.
-// Sends a 400 code if the score specified by the id url parameter doesn't exist/didn't delete.
-app.get('/delete/:id', (req, res) => {
-	dbController
-		.deleteScore(req.params.id)
-		.then(deleteCount => {	
-			if (deleteCount) {
-				dbController
-					.getScores()
-					.then(rows => res.status(200).json(rows));
-			
-			} else {
-				res.sendStatus(400);	
-			}
-		});
 });
 
 
