@@ -81,14 +81,14 @@
 
 
 		#input-container > button {
-			width: calc(calc(100% - 60px) / 16);
+			width: calc((100% - 60px) / 16);
 			height: 30px;
 			
 			border: 1px solid black;
 			border-radius: 10px;
 			outline: none;
 			box-shadow: 2px 2px 5px rgba(0, 0, 0, .9);
-			margin: 4px calc(calc(100% - 60px) / 32) 0 calc(calc(100% - 60px) / 32);
+			margin: 4px calc((100% - 60px) / 32) 0 calc((100% - 60px) / 32);
 			
 			font-size: 18px;
 		}
