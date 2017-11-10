@@ -93,5 +93,6 @@ app.post('/clear', (req, res) => {
 });
 
 
-app.listen(6050);
+const port = process.argv[2] ? process.argv[2] : 6050;
+app.listen(port, () => console.log('Listening on port ', port));
 
