@@ -30,10 +30,15 @@ class Game extends React.Component {
 			eligible: false,						// if completed game is eligible to be on leaderboard
 			inputLock: false,						// whether user can make a move or not
 			leaderboard: [],						// top 10 high scores
-			score: [ 0, 0 ],						// player and computer respectively
+			score: {
+				player: 0,
+				computer: 0
+			},
 			showModal: false,						// whether to show score submission modal
 			status: 'in play',					// either 'in play', 'W', 'L', or 'T'
 		};
+
+		this.moveButtons = [];				// buttons that let player make a move, populated by a ref function passed to <Input/>
 
 		getScores()
 			.then(leaderboard => this.setState({ leaderboard }))
@@ -47,7 +52,7 @@ class Game extends React.Component {
 	componentDidMount() {
 		window.addEventListener('keypress', e => {
 			if (!this.state.inputLock && 0 < Number(e.key) && Number(e.key) < 8) {
-				document.getElementById('col-button--' + e.key).click();
+				this.moveButtons[e.key - 1] ? this.moveButtons[e.key - 1].click() : null;
 			}
 		});
 		
@@ -61,6 +66,11 @@ class Game extends React.Component {
 	}
 
 
+	moveButtonRef = moveButtons => {
+		this.moveButtons = moveButtons;
+	}
+
+
 	makePlayerMove = col => {
 		if (this.state.board.isMoveLegal(col)) {			
 			// 1 is the player chip, computer uses 2
@@ -68,12 +78,11 @@ class Game extends React.Component {
 			this.state.board.updateStatus();
 
 			if (this.state.board.status == 'in play') {
-				// wait a short delay (for ux purposes) to make AI's move	
-				setTimeout(this.makeComputerMove, 500);
+				setTimeout(this.makeComputerMove, 500);			// delay for ux purposes
 				this.setState({ inputLock: true });
 				
 			} else {							
-				this.gameEnded(this.state.board.status);
+				this.gameEnded();
 			}
 		}
 	}
@@ -86,18 +95,19 @@ class Game extends React.Component {
 		if (this.state.board.status == 'in play') {
 			this.setState({ inputLock: false });
 		} else {
-			this.gameEnded(this.state.board.status);
+			this.gameEnded();
 		}
 	}
 
 
-	gameEnded(status) {
-		let score = this.state.score;
+	gameEnded() {
+		const status = this.state.board.status;
+		const score = Object.assign({}, this.state.score);
 
 		if (status == 'W') {
-			score[0]++;	
+			score.player++;	
 		} else if (status == 'L') {
-			score[1]++;
+			score.computer++;
 		}
 
 		this.setState({
@@ -161,7 +171,7 @@ class Game extends React.Component {
 				
 					<div id='game-container'>
 						<div id ='status'>	
-							<h1 id='left-status'>Player: { this.state.score[0] }&nbsp;&nbsp;Computer: { this.state.score[1] }</h1>
+							<h1 id='left-status'>Player: { this.state.score.player }&nbsp;&nbsp;Computer: { this.state.score.computer }</h1>
 							<h1 id='right-status'>{ rightStatus[this.state.status] }</h1>
 						</div>
 						
@@ -173,9 +183,13 @@ class Game extends React.Component {
 							/>
 						</div>
 						
-						<Input inputLock={ this.state.inputLock } makeMove={ this.makePlayerMove }/>
+						<Input
+							inputLock={ this.state.inputLock }
+							makeMove={ this.makePlayerMove }
+							moveButtonRef={ this.moveButtonRef }
+						/>
 						
-						<GameControl 
+						<GameControl
 							clearBoard={ this.clearBoard } 
 							eligible={ this.state.eligible } 
 							showModal={ this.setState.bind(this, { showModal: true }) }
