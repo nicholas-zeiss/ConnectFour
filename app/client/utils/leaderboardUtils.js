@@ -23,9 +23,9 @@ export const isEligible = (outcome, turns, board) => {
 export const formatDate = () => {
 	const now = new Date();
 	
-	const m = String(now.getMonth() + 1).padStart(2, '0');
-	const d = String(now.getDate()).padStart(2, '0');
-	const y = String(now.getFullYear() % 100).padStart(2, '0');
+	const m = ('0' + (String(now.getMonth() + 1))).slice(-2);
+	const d = ('0' + String(now.getDate())).slice(-2);
+	const y = ('0' + String(now.getFullYear() % 100)).slice(-2);
 	
 	return `${m}-${d}-${y}`;
 };
