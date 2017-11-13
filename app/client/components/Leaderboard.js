@@ -22,7 +22,7 @@ const ScoreBoard = props => {
 	return (
 		<div id='leaderboard-container' onClick={ toggle } ref={ div => board = div }>
 			<div id='leaderboard'>
-				<h1> Top 10 Games </h1>
+				<h1> Top 10 Scores </h1>
 				
 				<table id='score-table'>
 					<tbody>

@@ -164,6 +164,7 @@ class Game extends React.Component {
 				
 				<div id='header'>
 					<h1>Connect Four</h1>
+					<h4>Use the buttons or your keyboard to make a move. Try and earn a spot on the leaderboard on the left!</h4>
 				</div>
 				
 				<div id='app-container'>
