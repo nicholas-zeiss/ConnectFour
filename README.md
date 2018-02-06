@@ -6,6 +6,7 @@ All you need to do to get this site up and running locally is a few simple comma
 ```
  $ git clone https://github.com/nicholas-zeiss/ConnectFour.git
  $ cd ConnectFour/
+ $ mkdir app/server/db/data
  $ npm i
  $ npm start
 ```
